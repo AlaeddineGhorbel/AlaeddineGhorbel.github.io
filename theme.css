@@ -129,9 +129,17 @@ svg.lucide { width: 16px; height: 16px; stroke-width: 1.75; flex: none; }
 .hero h1 em { font-size: 1.08em; letter-spacing: -.02em; }
 .lead { font-size: 18px; color: var(--muted); max-width: 620px; margin-top: 30px; }
 .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 38px; }
+.hero-secondary-link { display: inline-flex; align-items: center; gap: 7px; padding: 14px 10px; color: var(--muted); font-size: 13px; font-weight: 600; }
+.hero-secondary-link:hover { color: var(--ink); }
 .hero-meta { display: flex; gap: 26px; flex-wrap: wrap; margin-top: 34px; font-size: 13px; color: var(--soft); }
 .hero-meta li { display: flex; align-items: center; gap: 8px; }
 .hero-meta svg.lucide { width: 15px; height: 15px; color: var(--gold); }
+.hero-contact { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 24px; }
+.hero-contact li, .hero-contact a { display: inline-flex; align-items: center; gap: 8px; }
+.hero-contact li { padding: 10px 15px; border: 1px solid rgba(15,26,36,.06); border-radius: 999px; background: rgba(255,255,255,.88); box-shadow: var(--shadow-sm); color: var(--text); font-size: 12px; font-weight: 600; white-space: nowrap; }
+.hero-contact a { transition: color .2s, transform .2s; }
+.hero-contact a:hover { color: var(--gold-deep); transform: translateY(-1px); }
+.hero-contact svg.lucide { width: 15px; height: 15px; color: var(--gold-deep); }
 
 .portrait { margin: 0; position: relative; }
 .portrait::before {
@@ -294,6 +302,19 @@ svg.lucide { width: 16px; height: 16px; stroke-width: 1.75; flex: none; }
 .stack dt { font: 400 22px/1.3 var(--serif); font-style: italic; color: var(--gold-deep); }
 .stack dd { font-size: 15.5px; font-weight: 500; color: var(--ink); align-self: center; }
 
+/* ---------- Formation & langues ---------- */
+.resume-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.resume-card { padding: 32px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); }
+.resume-card .label { margin-bottom: 8px; color: var(--gold-deep); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.resume-card h3 { margin-bottom: 22px; font-size: 22px; }
+.resume-list { border-top: 1px solid var(--line); }
+.resume-list li { display: grid; grid-template-columns: 150px 1fr; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); font-size: 13px; line-height: 1.6; }
+.resume-list b { color: var(--ink); font-size: 12px; }
+.resume-list span { color: var(--muted); }
+.language-row { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 24px; padding: 24px 30px; border-radius: var(--radius-lg); background: var(--paper-2); }
+.language-row h3 { font: 400 22px/1.3 var(--serif); color: var(--ink); }
+.language-row .tags { justify-content: flex-end; }
+
 /* ---------- Background ---------- */
 .background {
   display: grid; grid-template-columns: 1fr 1fr; gap: 100px;
@@ -367,6 +388,7 @@ svg.lucide { width: 16px; height: 16px; stroke-width: 1.75; flex: none; }
   .projects-grid { grid-template-columns: 1fr; }
   .timeline-item { grid-template-columns: 1fr; gap: 10px; }
   .stack > div { grid-template-columns: 200px 1fr; }
+  .resume-list li { grid-template-columns: 130px 1fr; }
 }
 
 @media (max-width: 600px) {
@@ -385,6 +407,13 @@ svg.lucide { width: 16px; height: 16px; stroke-width: 1.75; flex: none; }
   .ribbon { margin-top: 40px; }
   .ribbon-track span { font-size: 18px; }
   .expertise-grid, .mission-grid { grid-template-columns: 1fr; }
+  .resume-grid { grid-template-columns: 1fr; }
+  .resume-card { padding: 26px 22px; }
+  .resume-list li { grid-template-columns: 1fr; gap: 3px; }
+  .language-row { align-items: flex-start; flex-direction: column; padding: 24px 22px; }
+  .language-row .tags { justify-content: flex-start; }
+  .hero-contact { gap: 7px; }
+  .hero-contact li { padding: 9px 12px; font-size: 11px; }
   .mission { border-right: 0; margin-right: 0; padding-right: 0; }
   .mission + .mission { border-top: 1px solid var(--line); }
   .project-top { padding: 18px 22px; }
