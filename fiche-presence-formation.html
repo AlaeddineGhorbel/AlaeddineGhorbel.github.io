@@ -5,8 +5,48 @@
 <title>Fiche de présence de formation – CliniSys</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{color-scheme:light;--bg:#f4f7fb;--card:#fff;--text:#1d2733;--muted:#657386;--accent:#167ca5;--border:#d5dce4;--soft:#eaf3f8;--good:#16794a;--bad:#b42318}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}.wrap{max-width:1250px;margin:auto;padding:18px}.panel,.sheet{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 2px 10px #14283b0a}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}.brand{font-weight:800;color:var(--accent);letter-spacing:.3px}.muted,.hint{color:var(--muted);font-size:13px}.btns{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}button,.btn{font:inherit;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:8px;padding:9px 13px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}button.primary,.primary{background:var(--accent);color:white;border-color:var(--accent);font-weight:650}button.danger{color:var(--bad);border-color:#e8b5b0}button:disabled{opacity:.5;cursor:not-allowed}input,textarea,select{font:inherit;color:var(--text);background:white;border:1px solid var(--border);border-radius:7px;padding:9px;width:100%;min-width:0}label{display:flex;flex-direction:column;gap:5px;font-weight:650;font-size:14px}.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px 16px;margin:14px 0}.head{display:grid;grid-template-columns:1fr 1.4fr .8fr;border:1px solid var(--border);margin-bottom:16px}.head>div{padding:9px;display:flex;align-items:center;justify-content:center;text-align:center}.head img{max-width:100%;height:46px;object-fit:contain}.head .t{flex-direction:column;font-weight:750;border-left:1px solid var(--border);border-right:1px solid var(--border)}.head .t small{font-size:12px;border-bottom:1px solid var(--border);width:100%;padding-bottom:4px;margin-bottom:4px}.head .ref{font-size:12px;text-align:left;justify-content:flex-start}.tablewrap{overflow-x:auto}table{border-collapse:collapse;width:100%;table-layout:fixed}th,td{border:1px solid var(--border);padding:7px 8px;vertical-align:middle}th{font-style:normal;font-size:12px;font-weight:750;letter-spacing:.02em;text-transform:uppercase;color:#28465a;background:#eaf2f7;padding:12px 8px}tbody tr:nth-child(even){background:#f8fafc}tbody tr:hover{background:#f1f7fa}.tablewrap{border:1px solid var(--border);border-radius:8px;overflow-x:auto;-webkit-overflow-scrolling:touch}table{min-width:760px}th:nth-child(1){width:22%}th:nth-child(2){width:22%}th:nth-child(3){width:15%}th:nth-child(4){width:15%}th:nth-child(5){width:26%}td input{border:0;padding:8px;min-height:44px}.eval{display:flex;justify-content:center;gap:5px}.eval label{cursor:pointer}.eval input{position:absolute;opacity:0;width:0}.eval span{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #aab7c5;border-radius:50%}.eval input:checked+span{background:var(--accent);color:#fff;border-color:var(--accent)}canvas.sig{display:block;width:100%;height:62px;touch-action:none;cursor:crosshair;background:#fff;border:1px dashed #b9c6d3;border-radius:5px}.signature-img{max-width:170px;max-height:52px;object-fit:contain}.legend{font-size:12px;color:var(--muted);margin-top:8px}.prog{margin-top:18px}.prog h3{font-size:15px;text-decoration:underline}.prog textarea{min-height:85px}.fsig{margin-top:16px;max-width:320px}.list{display:grid;gap:10px}.session{border:1px solid var(--border);border-radius:10px;padding:13px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.session strong{display:block}.status{font-size:12px;color:var(--good)}.notice{padding:12px;border-radius:8px;background:#edf6fb;margin:12px 0}.error{color:var(--bad)}.success{color:var(--good)}.hidden{display:none!important}.codebox{font-size:22px;letter-spacing:2px;font-weight:800;background:#f1f4f7;padding:14px;border-radius:8px;word-break:break-all}.participant-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.participant-grid .wide{grid-column:1/-1}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.rowcard{border:1px solid var(--border);border-radius:9px;padding:12px;margin:10px 0}.rowcard h4{margin:0 0 8px}.small{font-size:12px;color:var(--muted)}.public-table{margin-top:18px}.public-table table{min-width:760px}.public-table th{font-style:normal;text-transform:uppercase;font-size:11px}.public-table td{font-size:13px}.live-state{display:inline-flex;align-items:center;gap:6px;color:#16794a;font-size:12px;font-weight:700}.live-dot{width:7px;height:7px;border-radius:50%;background:#20a464;display:inline-block}@media(max-width:650px){.wrap{padding:9px}.panel,.sheet{padding:13px}.head{grid-template-columns:1fr}.head .t{border:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}.participant-grid{grid-template-columns:1fr}.participant-grid .wide{grid-column:auto}.tablewrap{margin:0 -2px}table{min-width:760px}th,td{padding:8px 7px}th{font-size:11px}td input{border:1px solid var(--border);border-radius:6px}.eval{justify-content:center}.eval span{width:34px;height:34px}}@media print{@page{size:A4;margin:12mm}table{min-width:0}body{background:#fff}.wrap{padding:0;max-width:none}.panel,.noprint{display:none!important}.sheet{border:0;box-shadow:none;padding:0;margin:0}input,textarea{border:0;padding:2px}th{background:#fff}.tablewrap{overflow:visible}canvas.sig{border:0}.eval span{border:0;color:#000}.head{break-inside:avoid}.prog textarea{min-height:70px}}
+:root{color-scheme:light dark;--bg:#f7f9fc;--card:#fff;--text:#1d2733;--muted:#5d6b7a;--accent:#1c7ea8;--border:#d5dce4;--ring:#b8c3ce;--thead:#eaf3f8}
+@media (prefers-color-scheme:dark){:root{--bg:#10151b;--card:#1a212a;--text:#e6ebf0;--muted:#9aa7b4;--border:#3a4654;--ring:#55657a;--thead:#223140}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.4}
+.wrap{max-width:1500px;margin:0 auto;padding:12px 2vw}
+.sheet{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px}
+.head{display:grid;grid-template-columns:1fr 1.4fr .8fr;border:1px solid var(--border);margin-bottom:16px}
+.head>div{padding:8px;display:flex;align-items:center;justify-content:center;text-align:center}
+.head .logo{background:transparent}.head img{max-width:100%;height:46px;object-fit:contain;background:#fff;padding:5px 12px;border-radius:8px}
+.head .t{flex-direction:column;font-weight:700;border-left:1px solid var(--border);border-right:1px solid var(--border)}
+.head .t small{font-size:12px;border-bottom:1px solid var(--border);width:100%;padding-bottom:4px;margin-bottom:4px}
+.head .ref{font-size:12px;text-align:left;justify-content:flex-start}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px 16px;margin-bottom:18px}
+.fields label{display:flex;flex-direction:column;font-weight:700;font-size:14px;gap:4px}
+input,select,textarea{font:inherit;color:var(--text);background:transparent;border:1px solid var(--border);border-radius:6px;padding:8px;width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
+.tw{overflow-x:visible}table{border-collapse:collapse;width:100%;table-layout:fixed}
+th,td{border:1px solid var(--border);padding:3px;vertical-align:middle}
+th{font-style:italic;font-size:14px;padding:10px 6px;background:var(--thead)}
+th:nth-child(1){width:24%}th:nth-child(2){width:24%}th:nth-child(3){width:15%}th:nth-child(4){width:15%}th:nth-child(5){width:22%}
+td input{border:0;border-radius:0;padding:10px 8px;font-size:15px;min-height:52px}
+td.sig{padding:2px 6px}.padwrap{position:relative}.padwrap .clr{position:absolute;top:3px;right:3px;margin:0;padding:1px 7px;font-size:12px;line-height:1.5;background:var(--card);opacity:.85}
+td.ev{text-align:center}.eval{display:flex;justify-content:center;gap:6px}.eval label{cursor:pointer;display:block}
+.eval input{position:absolute;opacity:0;width:0;height:0;padding:0;border:0}
+.eval span{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid var(--ring);border-radius:50%;font-weight:600;font-size:15px;user-select:none}
+.eval input:checked+span{background:var(--accent);border-color:var(--accent);color:#fff}
+.eval input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
+canvas.pad{display:block;width:100%;height:56px;touch-action:none;cursor:crosshair;background:transparent}
+.pad-big{height:90px!important;border:1px dashed var(--border)}
+.legend{font-size:13px;color:var(--muted);margin-top:10px}.prog{margin-top:18px}.prog h3{margin:0 0 6px;font-size:15px;text-decoration:underline}
+textarea{min-height:90px;resize:vertical}.fsig{margin-top:16px;max-width:320px}.fsig b{font-size:14px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+button{font:inherit;border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:8px;padding:10px 14px;cursor:pointer}
+button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.clr{font-size:11px;padding:2px 6px;margin-top:2px;border-radius:4px}.hint{font-size:13px;color:var(--muted)}
+.hidden{display:none!important}.error{color:#b42318}.success{color:#16794a}
+.panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.noprint{display:flex}.signature-img{max-width:170px;max-height:52px;object-fit:contain}
+@media (max-width:560px){.fields{grid-template-columns:1fr}.head{grid-template-columns:1fr}.head .t{border:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}}
+@media screen and (max-width:700px){.wrap{padding:8px}.sheet{padding:12px}table,tbody,tr,td{display:block;width:100%}thead{display:none}tr{border:1px solid var(--border);border-radius:10px;margin-bottom:12px;padding:6px}td{border:0;padding:6px 4px}td::before{content:attr(data-label);display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:3px}td input{border:1px solid var(--border);border-radius:6px;min-height:44px}td.sig{padding:6px 4px}canvas.pad{border:1px dashed var(--border);border-radius:6px}td.ev{text-align:left}.eval{justify-content:flex-start;gap:10px}.eval span{width:40px;height:40px}}
+@media print{@page{size:A4;margin:12mm}body{background:#fff;color:#000}.wrap{padding:0;max-width:none}.sheet{border:0;padding:0}.btns,.hint,.clr,.noprint{display:none!important}input,select,textarea{border:0;padding:2px}select{appearance:none;-webkit-appearance:none}.tw{overflow:visible}table{min-width:0}th{background:none}.wrap{max-width:none}.eval span{border-color:#000}.pad-big{border:0}.eval span{border:0;width:26px;height:26px;color:#000;background:none!important}.eval input:checked+span{border:2px solid #000;background:none!important;color:#000;font-weight:700}:root{--border:#000;--text:#000;--card:#fff;--bg:#fff;--muted:#444;--thead:#fff;color-scheme:light}}
 </style>
 </head>
 <body><div class="wrap">
@@ -25,7 +65,35 @@
 <label class="wide">Code personnel (uniquement si tu as déjà enregistré ta ligne)<input id="p_code" autocomplete="off" placeholder="Code reçu après ton premier enregistrement"></label>
 </div><div class="btns"><button class="primary" id="submitParticipant">Enregistrer ma ligne</button></div><div id="participantMsg" class="hint"></div><div id="codeResult" class="hidden notice"><b>Ton code personnel</b><p class="small">Ce code ne sera plus affiché. Copie-le ou conserve-le en lieu sûr.</p><div id="personalCode" class="codebox"></div><div class="btns"><button id="copyCode">Copier le code</button></div></div><div id="publicRoster" class="public-table"></div></section>
 <section id="welcome" class="panel hidden"><h2>Bienvenue</h2><p>Accède à une fiche de présence avec le lien transmis par ton formateur, ou connecte-toi à l'espace administrateur pour créer et gérer les formations.</p><button class="primary" id="welcomeAdmin">Espace administrateur</button></section>
-<div id="printArea" class="sheet hidden"><div class="toolbar noprint" id="sheetToolbar"><button id="shareBtn" class="primary">Copier le lien participant</button><button id="editSessionBtn">Modifier la fiche</button><button id="newFromCurrentBtn" class="primary">+ Nouvelle fiche</button><label style="min-width:190px">Fiches enregistrées<select id="sheetPicker"><option value="">Choisir une fiche…</option></select></label><button id="printBtn">Imprimer / PDF</button></div><div class="head"><div><img alt="CliniSys" src="https://alaeddineghorbel.github.io/Clinisys-Mon-JournalActivite/logo.png" onerror="this.style.display='none'"></div><div class="t"><small>FORMULAIRE</small><span>FICHE DE PRESENCE DE FORMATION</span></div><div class="ref">ENQ- DEV-03<br>Rév : 4<br>Page : 1/1</div></div><div class="fields"><label>Date<input id="pr_date" readonly></label><label>Client<input id="pr_client" readonly></label><label>Formateur<input id="pr_trainer" readonly></label><label>Thème<input id="pr_theme" readonly></label><label>Horaire<input id="pr_schedule" readonly></label></div><div class="tablewrap"><table><thead><tr><th>Nom et Prénom</th><th>Signature</th><th>Qualification</th><th>Évaluation (*)</th><th>Observation(s)</th></tr></thead><tbody id="printRows"></tbody></table></div><div class="legend">* : 1 Faible / 2 Moyen / 3 Bien / 4 Très bien</div><div class="prog"><h3>Programme de formation :</h3><textarea id="pr_programme" readonly></textarea></div><div class="fsig"><b>Signature Formateur</b><div id="pr_trainer_signature"></div></div></div>
+<div id="printArea" class="sheet hidden">
+ <div class="toolbar noprint" id="sheetToolbar">
+  <button class="main" id="printBtn">Imprimer / Enregistrer en PDF</button>
+  <button id="addAdminRowBtn">+ Ajouter une ligne</button>
+  <button id="saveAdminRowsBtn" class="main">Enregistrer les lignes saisies</button>
+  <button id="editSessionBtn">Modifier la fiche</button>
+  <button id="newFromCurrentBtn">+ Nouvelle fiche</button>
+  <label style="min-width:220px">Fiches enregistrées<select id="sheetPicker"><option value="">Choisir une fiche…</option></select></label>
+  <button id="shareBtn">Copier le lien participant</button>
+ </div>
+ <div class="btns noprint"><button id="resetAdminRowsBtn">Effacer les lignes non enregistrées</button><button id="logoutBtn">Déconnexion</button></div>
+ <div class="head">
+  <div class="logo"><img alt="CliniSys" src="https://alaeddineghorbel.github.io/Clinisys-Mon-JournalActivite/logo.png" onerror="this.style.display='none'"></div>
+  <div class="t"><small>FORMULAIRE</small><span>FICHE DE PRESENCE DE FORMATION</span></div>
+  <div class="ref">ENQ-&nbsp;DEV-03<br>Rév : 4<br>Page : 1/1</div>
+ </div>
+ <div class="fields">
+  <label>Date<input type="date" id="pr_date"></label>
+  <label>Client<input type="text" id="pr_client" autocomplete="off"></label>
+  <label>Formateur<input type="text" id="pr_trainer" autocomplete="off"></label>
+  <label>Thème<input type="text" id="pr_theme" autocomplete="off"></label>
+  <label>Horaire<input type="text" id="pr_schedule" placeholder="ex. 09:00 – 12:00" autocomplete="off"></label>
+ </div>
+ <div class="tw"><table><thead><tr><th>Nom et Prénom</th><th>Signature</th><th>Qualification</th><th>Évaluation (*)</th><th>Observation(s)</th></tr></thead><tbody id="printRows"></tbody></table></div>
+ <div class="legend">* : 1 Faible / 2 Moyen / 3 Bien / 4 Très bien</div>
+ <div class="prog"><h3>Programme de formation :</h3><textarea id="pr_programme"></textarea></div>
+ <div class="fsig"><b>Signature Formateur</b><canvas class="pad pad-big" id="padF"></canvas><button class="clr noprint" id="clearPadF">Effacer</button></div>
+ <div id="sheetMsg" class="hint noprint"></div>
+</div>
 </div>
 <script>
 const SUPABASE_URL="https://zqpnryrzwfetbysawkae.supabase.co";
