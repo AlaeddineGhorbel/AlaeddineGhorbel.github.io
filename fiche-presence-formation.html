@@ -1,181 +1,65 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fiche de présence de formation – CliniSys</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{color-scheme:light dark;--bg:#f7f9fc;--card:#fff;--text:#1d2733;--muted:#5d6b7a;--accent:#1c7ea8;--border:#d5dce4;--ring:#b8c3ce;--thead:#eaf3f8}
-@media (prefers-color-scheme:dark){:root{--bg:#10151b;--card:#1a212a;--text:#e6ebf0;--muted:#9aa7b4;--border:#3a4654;--ring:#55657a;--thead:#223140}}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.4}
-.wrap{max-width:1500px;margin:0 auto;padding:12px 2vw}
-.sheet{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px}
-.head{display:grid;grid-template-columns:1fr 1.4fr .8fr;border:1px solid var(--border);margin-bottom:16px}
-.head>div{padding:8px;display:flex;align-items:center;justify-content:center;text-align:center}
-.head .logo{background:transparent}
-.head img{max-width:100%;height:46px;object-fit:contain;background:#fff;padding:5px 12px;border-radius:8px}
-.head .t{flex-direction:column;font-weight:700;border-left:1px solid var(--border);border-right:1px solid var(--border)}
-.head .t small{font-size:12px;border-bottom:1px solid var(--border);width:100%;padding-bottom:4px;margin-bottom:4px}
-.head .ref{font-size:12px;text-align:left;justify-content:flex-start}
-.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px 16px;margin-bottom:18px}
-.fields label{display:flex;flex-direction:column;font-weight:700;font-size:14px;gap:4px}
-input,select,textarea{font:inherit;color:var(--text);background:transparent;border:1px solid var(--border);border-radius:6px;padding:8px;width:100%}
-input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:1px}
-.tw{overflow-x:visible}
-table{border-collapse:collapse;width:100%;table-layout:fixed}
-th,td{border:1px solid var(--border);padding:3px;vertical-align:middle}
-th{font-style:italic;font-size:14px;padding:10px 6px;background:var(--thead)}
-th:nth-child(1){width:24%}th:nth-child(2){width:24%}th:nth-child(3){width:15%}th:nth-child(4){width:15%}th:nth-child(5){width:22%}
-td input{border:0;border-radius:0;padding:10px 8px;font-size:15px;min-height:52px}
-td.sig{padding:2px 6px}
-.padwrap{position:relative}
-.padwrap .clr{position:absolute;top:3px;right:3px;margin:0;padding:1px 7px;font-size:12px;line-height:1.5;background:var(--card);opacity:.85}
-td.ev{text-align:center}
-.eval{display:flex;justify-content:center;gap:6px}
-.eval label{cursor:pointer;display:block}
-.eval input{position:absolute;opacity:0;width:0;height:0;padding:0;border:0}
-.eval span{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid var(--ring);border-radius:50%;font-weight:600;font-size:15px;user-select:none}
-.eval input:checked+span{background:var(--accent);border-color:var(--accent);color:#fff}
-.eval input:focus-visible+span{outline:2px solid var(--accent);outline-offset:2px}
-canvas.pad{display:block;width:100%;height:56px;touch-action:none;cursor:crosshair;background:transparent}
-.pad-big{height:90px!important;border:1px dashed var(--border)}
-.legend{font-size:13px;color:var(--muted);margin-top:10px}
-.prog{margin-top:18px}
-.prog h3{margin:0 0 6px;font-size:15px;text-decoration:underline}
-textarea{min-height:90px;resize:vertical}
-.fsig{margin-top:16px;max-width:320px}
-.fsig b{font-size:14px}
-.btns{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
-button{font:inherit;border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:8px;padding:10px 14px;cursor:pointer}
-button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
-.clr{font-size:11px;padding:2px 6px;margin-top:2px;border-radius:4px}
-.hint{font-size:13px;color:var(--muted)}
-@media (max-width:560px){.fields{grid-template-columns:1fr}.head{grid-template-columns:1fr}.head .t{border:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}}
-@media screen and (max-width:700px){
- .wrap{padding:8px}
- .sheet{padding:12px}
- table,tbody,tr,td{display:block;width:100%}
- thead{display:none}
- tr{border:1px solid var(--border);border-radius:10px;margin-bottom:12px;padding:6px}
- td{border:0;padding:6px 4px}
- td::before{content:attr(data-label);display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:3px}
- td input{border:1px solid var(--border);border-radius:6px;min-height:44px}
- td.sig{padding:6px 4px}
- canvas.pad{border:1px dashed var(--border);border-radius:6px}
- td.ev{text-align:left}
- .eval{justify-content:flex-start;gap:10px}
- .eval span{width:40px;height:40px}
-}
-@media print{
- @page{size:A4;margin:12mm}
- body{background:#fff;color:#000}
- .wrap{padding:0;max-width:none}
- .sheet{border:0;padding:0}
- .btns,.hint,.clr,.noprint{display:none!important}
- input,select,textarea{border:0;padding:2px}
- select{appearance:none;-webkit-appearance:none}
- .tw{overflow:visible}
- table{min-width:0}
- th{background:none}
- .wrap{max-width:none}
- .eval span{border-color:#000}
- .pad-big{border:0}
- .eval span{border:0;width:26px;height:26px;color:#000;background:none!important}
- .eval input:checked+span{border:2px solid #000;background:none!important;color:#000;font-weight:700}
- :root{--border:#000;--text:#000;--card:#fff;--bg:#fff;--muted:#444;--thead:#fff;color-scheme:light}
-}
+:root{color-scheme:light;--bg:#f4f7fb;--card:#fff;--text:#1d2733;--muted:#657386;--accent:#167ca5;--border:#d5dce4;--soft:#eaf3f8;--good:#16794a;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}.wrap{max-width:1250px;margin:auto;padding:18px}.panel,.sheet{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:16px;box-shadow:0 2px 10px #14283b0a}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}.brand{font-weight:800;color:var(--accent);letter-spacing:.3px}.muted,.hint{color:var(--muted);font-size:13px}.btns{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}button,.btn{font:inherit;border:1px solid var(--border);background:#fff;color:var(--text);border-radius:8px;padding:9px 13px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}button.primary,.primary{background:var(--accent);color:white;border-color:var(--accent);font-weight:650}button.danger{color:var(--bad);border-color:#e8b5b0}button:disabled{opacity:.5;cursor:not-allowed}input,textarea,select{font:inherit;color:var(--text);background:white;border:1px solid var(--border);border-radius:7px;padding:9px;width:100%;min-width:0}label{display:flex;flex-direction:column;gap:5px;font-weight:650;font-size:14px}.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px 16px;margin:14px 0}.head{display:grid;grid-template-columns:1fr 1.4fr .8fr;border:1px solid var(--border);margin-bottom:16px}.head>div{padding:9px;display:flex;align-items:center;justify-content:center;text-align:center}.head img{max-width:100%;height:46px;object-fit:contain}.head .t{flex-direction:column;font-weight:750;border-left:1px solid var(--border);border-right:1px solid var(--border)}.head .t small{font-size:12px;border-bottom:1px solid var(--border);width:100%;padding-bottom:4px;margin-bottom:4px}.head .ref{font-size:12px;text-align:left;justify-content:flex-start}.tablewrap{overflow-x:auto}table{border-collapse:collapse;width:100%;table-layout:fixed}th,td{border:1px solid var(--border);padding:5px;vertical-align:middle}th{font-style:italic;font-size:13px;background:var(--soft);padding:10px 6px}th:nth-child(1){width:22%}th:nth-child(2){width:22%}th:nth-child(3){width:15%}th:nth-child(4){width:15%}th:nth-child(5){width:26%}td input{border:0;padding:8px;min-height:44px}.eval{display:flex;justify-content:center;gap:5px}.eval label{cursor:pointer}.eval input{position:absolute;opacity:0;width:0}.eval span{display:flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #aab7c5;border-radius:50%}.eval input:checked+span{background:var(--accent);color:#fff;border-color:var(--accent)}canvas.sig{display:block;width:100%;height:62px;touch-action:none;cursor:crosshair;background:#fff;border:1px dashed #b9c6d3;border-radius:5px}.signature-img{max-width:170px;max-height:52px;object-fit:contain}.legend{font-size:12px;color:var(--muted);margin-top:8px}.prog{margin-top:18px}.prog h3{font-size:15px;text-decoration:underline}.prog textarea{min-height:85px}.fsig{margin-top:16px;max-width:320px}.list{display:grid;gap:10px}.session{border:1px solid var(--border);border-radius:10px;padding:13px;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.session strong{display:block}.status{font-size:12px;color:var(--good)}.notice{padding:12px;border-radius:8px;background:#edf6fb;margin:12px 0}.error{color:var(--bad)}.success{color:var(--good)}.hidden{display:none!important}.codebox{font-size:22px;letter-spacing:2px;font-weight:800;background:#f1f4f7;padding:14px;border-radius:8px;word-break:break-all}.participant-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.participant-grid .wide{grid-column:1/-1}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.rowcard{border:1px solid var(--border);border-radius:9px;padding:12px;margin:10px 0}.rowcard h4{margin:0 0 8px}.small{font-size:12px;color:var(--muted)}@media(max-width:650px){.wrap{padding:9px}.panel,.sheet{padding:13px}.head{grid-template-columns:1fr}.head .t{border:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}.participant-grid{grid-template-columns:1fr}.participant-grid .wide{grid-column:auto}table,tbody,tr,td{display:block;width:100%}thead{display:none}tr{border:1px solid var(--border);border-radius:9px;margin-bottom:12px;padding:5px}td{border:0;padding:5px}td:before{content:attr(data-label);display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:3px}td input{border:1px solid var(--border);border-radius:6px}.eval{justify-content:flex-start}.eval span{width:37px;height:37px}}@media print{@page{size:A4;margin:12mm}body{background:#fff}.wrap{padding:0;max-width:none}.panel,.noprint{display:none!important}.sheet{border:0;box-shadow:none;padding:0;margin:0}input,textarea{border:0;padding:2px}th{background:#fff}.tablewrap{overflow:visible}canvas.sig{border:0}.eval span{border:0;color:#000}.head{break-inside:avoid}.prog textarea{min-height:70px}}
 </style>
 </head>
-<body>
-<div class="wrap">
- <div class="btns">
-  <button class="main" id="btnPrint">Imprimer / Enregistrer en PDF</button>
-  <button id="btnAdd">+ Ajouter une ligne</button>
-  <button id="btnReset">Tout effacer</button>
- </div>
- <p class="hint">Remplissez la fiche, signez avec le doigt ou la souris, puis « Imprimer / Enregistrer en PDF » pour obtenir le document à envoyer.</p>
- <div class="sheet" id="sheet">
-  <div class="head">
-   <div class="logo"><img alt="CliniSys" src="data:image/png;base64,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"></div>
-   <div class="t"><small>FORMULAIRE</small><span>FICHE DE PRESENCE DE FORMATION</span></div>
-   <div class="ref">ENQ-&nbsp;DEV-03<br>Rév : 4<br>Page : 1/1</div>
-  </div>
-  <div class="fields">
-   <label>Date<input type="date" id="f_date"></label>
-   <label>Client<input type="text" id="f_client" autocomplete="off"></label>
-   <label>Formateur<input type="text" id="f_formateur" autocomplete="off"></label>
-   <label>Thème<input type="text" id="f_theme" autocomplete="off"></label>
-   <label>Horaire<input type="text" id="f_horaire" placeholder="ex. 09:00 – 12:00" autocomplete="off"></label>
-  </div>
-  <div class="tw">
-   <table>
-    <thead><tr><th>Nom et Prénom</th><th>Signature</th><th>Qualification</th><th>Évaluation (*)</th><th>Observation(s)</th></tr></thead>
-    <tbody id="rows"></tbody>
-   </table>
-  </div>
-  <div class="legend">* : 1 Faible / 2 Moyen / 3 Bien / 4 Très bien</div>
-  <div class="prog">
-   <h3>Programme de formation :</h3>
-   <textarea id="f_prog"></textarea>
-  </div>
-  <div class="fsig"><b>Signature Formateur</b><canvas class="pad pad-big" id="padF"></canvas><button class="clr noprint" data-clear="padF">Effacer</button></div>
- </div>
+<body><div class="wrap">
+<div class="top"><div><div class="brand">CLINISYS · FORMATION</div><div class="muted">Gestion des fiches de présence</div></div><div class="toolbar noprint"><button id="homeBtn">Accueil</button><button id="adminBtn">Espace administrateur</button></div></div>
+<section id="loginPanel" class="panel hidden noprint"><h2>Connexion administrateur</h2><p class="muted">Utilise ton compte administrateur CliniSys.</p><div class="fields"><label>E-mail<input id="loginEmail" type="email" autocomplete="username"></label><label>Mot de passe<input id="loginPassword" type="password" autocomplete="current-password"></label></div><div class="btns"><button class="primary" id="loginBtn">Se connecter</button></div><div id="loginMsg" class="hint"></div></section>
+<section id="dashboard" class="panel hidden noprint"><div class="top"><div><h2>Mes fiches de formation</h2><div class="muted">Chaque fiche possède son propre lien de partage et ses participants.</div></div><button class="primary" id="newSessionBtn">+ Nouvelle fiche</button></div><div id="sessionList" class="list"></div><div class="btns"><button class="danger" id="deleteAllBtn">Vider toutes les fiches</button><button id="logoutBtn">Déconnexion</button></div><p class="hint">La suppression totale est réservée aux administrateurs. Elle supprime les fiches et toutes leurs lignes de présence.</p></section>
+<section id="editor" class="panel hidden noprint"><h2 id="editorTitle">Nouvelle fiche de formation</h2><div class="fields">
+<label>Date<input type="date" id="a_date"></label><label>Client / établissement<input id="a_client"></label><label>Formateur<input id="a_trainer"></label><label>Thème / matière<input id="a_theme"></label><label>Horaire<input id="a_schedule" placeholder="09:00 – 12:00"></label></div><label>Programme de formation<textarea id="a_programme" rows="3"></textarea></label><div class="fsig"><b>Signature du formateur</b><canvas class="sig" id="adminSignature"></canvas><button id="clearAdminSig">Effacer signature</button></div><div class="btns"><button class="primary" id="saveSessionBtn">Enregistrer la fiche</button><button id="cancelEditorBtn">Annuler</button></div><div id="editorMsg" class="hint"></div></section>
+<section id="detailPanel" class="panel hidden noprint"><div class="top"><div><h2 id="detailTitle">Fiche</h2><div class="muted" id="detailMeta"></div></div><div class="toolbar"><button id="shareBtn" class="primary">Copier le lien participant</button><button id="editSessionBtn">Modifier les informations</button><button id="printBtn">Imprimer / PDF</button><button id="backBtn">Retour</button></div></div><div id="detailRows" class="list"></div><div id="detailMsg" class="hint"></div></section>
+<section id="participantPanel" class="panel hidden"><h2>Fiche de présence – Participation à la formation</h2><div id="participantMeta" class="notice">Chargement de la fiche…</div><p class="hint">Remplis tes informations et signe dans la zone prévue. Après le premier enregistrement, un code personnel te sera remis. Conserve-le pour modifier uniquement ta propre ligne.</p><div class="participant-grid">
+<label class="wide">Nom et prénom *<input id="p_name" autocomplete="name" placeholder="Votre nom et prénom"></label>
+<label>Qualification<input id="p_qualification" placeholder="Fonction / qualification"></label>
+<label>Évaluation<select id="p_evaluation"><option value="">Non renseignée</option><option value="1">1 – Faible</option><option value="2">2 – Moyen</option><option value="3">3 – Bien</option><option value="4">4 – Très bien</option></select></label>
+<label class="wide">Observation(s)<textarea id="p_observations" rows="2"></textarea></label>
+<div class="wide"><b>Signature du participant</b><canvas id="participantSignature" class="sig"></canvas><button id="clearParticipantSig">Effacer signature</button></div>
+<label class="wide">Code personnel (uniquement si tu as déjà enregistré ta ligne)<input id="p_code" autocomplete="off" placeholder="Code reçu après ton premier enregistrement"></label>
+</div><div class="btns"><button class="primary" id="submitParticipant">Enregistrer ma ligne</button></div><div id="participantMsg" class="hint"></div><div id="codeResult" class="hidden notice"><b>Ton code personnel</b><p class="small">Ce code ne sera plus affiché. Copie-le ou conserve-le en lieu sûr.</p><div id="personalCode" class="codebox"></div><div class="btns"><button id="copyCode">Copier le code</button></div></div><div id="publicRoster" class="small"></div></section>
+<section id="welcome" class="panel hidden"><h2>Bienvenue</h2><p>Accède à une fiche de présence avec le lien transmis par ton formateur, ou connecte-toi à l'espace administrateur pour créer et gérer les formations.</p><button class="primary" id="welcomeAdmin">Espace administrateur</button></section>
+<div id="printArea" class="sheet hidden"><div class="head"><div><img alt="CliniSys" src="https://alaeddineghorbel.github.io/Clinisys-Mon-JournalActivite/logo.png" onerror="this.style.display='none'"></div><div class="t"><small>FORMULAIRE</small><span>FICHE DE PRESENCE DE FORMATION</span></div><div class="ref">ENQ- DEV-03<br>Rév : 4<br>Page : 1/1</div></div><div class="fields"><label>Date<input id="pr_date" readonly></label><label>Client<input id="pr_client" readonly></label><label>Formateur<input id="pr_trainer" readonly></label><label>Thème<input id="pr_theme" readonly></label><label>Horaire<input id="pr_schedule" readonly></label></div><div class="tablewrap"><table><thead><tr><th>Nom et Prénom</th><th>Signature</th><th>Qualification</th><th>Évaluation (*)</th><th>Observation(s)</th></tr></thead><tbody id="printRows"></tbody></table></div><div class="legend">* : 1 Faible / 2 Moyen / 3 Bien / 4 Très bien</div><div class="prog"><h3>Programme de formation :</h3><textarea id="pr_programme" readonly></textarea></div><div class="fsig"><b>Signature Formateur</b><div id="pr_trainer_signature"></div></div></div>
 </div>
 <script>
-(function(){
- var rowsEl=document.getElementById('rows');
- function setupPad(c){
-  var ctx=c.getContext('2d'),drawing=false,last=null,dirty=false;
-  function fit(){
-   var r=c.getBoundingClientRect(),d=window.devicePixelRatio||1,img=dirty?c.toDataURL():null;
-   c.width=Math.max(1,r.width*d);c.height=Math.max(1,r.height*d);
-   ctx.setTransform(d,0,0,d,0,0);ctx.lineWidth=2;ctx.lineCap='round';ctx.strokeStyle='#2f7df6';
-   if(img){var i=new Image();i.onload=function(){ctx.drawImage(i,0,0,r.width,r.height)};i.src=img}
-  }
-  function pos(e){var r=c.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
-  c.addEventListener('pointerdown',function(e){drawing=true;last=pos(e);c.setPointerCapture(e.pointerId);e.preventDefault()});
-  c.addEventListener('pointermove',function(e){if(!drawing)return;var p=pos(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;dirty=true});
-  ['pointerup','pointercancel'].forEach(function(n){c.addEventListener(n,function(){drawing=false})});
-  c.clearPad=function(){ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,c.width,c.height);ctx.restore();dirty=false};
-  fit();window.addEventListener('resize',fit);window.addEventListener('beforeprint',fit);
- }
- var rowN=0,LABELS={1:'Faible',2:'Moyen',3:'Bien',4:'Très bien'};
- function evalHtml(n){
-  var h='';
-  for(var v=1;v<=4;v++)h+='<label title="'+v+' – '+LABELS[v]+'"><input type="radio" name="eval'+n+'" value="'+v+'"><span>'+v+'</span></label>';
-  return h;
- }
- function addRow(){
-  var n=++rowN;
-  var tr=document.createElement('tr');
-  tr.innerHTML='<td data-label="Nom et Prénom"><input type="text" aria-label="Nom et prénom" autocomplete="off"></td>'+
-   '<td class="sig" data-label="Signature"><div class="padwrap"><canvas class="pad" aria-label="Signature"></canvas><button class="clr noprint" type="button" title="Effacer la signature">✕</button></div></td>'+
-   '<td data-label="Qualification"><input type="text" aria-label="Qualification" autocomplete="off"></td>'+
-   '<td class="ev" data-label="Évaluation (*)"><div class="eval" role="radiogroup" aria-label="Évaluation">'+evalHtml(n)+'</div></td>'+
-   '<td data-label="Observation(s)"><input type="text" aria-label="Observations" autocomplete="off"></td>';
-  rowsEl.appendChild(tr);
-  var c=tr.querySelector('canvas');setupPad(c);
-  tr.querySelector('.clr').onclick=function(){c.clearPad()};
-  tr.querySelectorAll('.eval input').forEach(function(r){
-   var was=false;
-   r.addEventListener('pointerdown',function(){was=r.checked});
-   r.parentNode.addEventListener('pointerdown',function(){was=r.checked});
-   r.addEventListener('click',function(){if(was){r.checked=false}was=false});
-  });
- }
- for(var i=0;i<10;i++)addRow();
- setupPad(document.getElementById('padF'));
- document.querySelector('[data-clear="padF"]').onclick=function(){document.getElementById('padF').clearPad()};
- document.getElementById('btnAdd').onclick=addRow;
- document.getElementById('btnPrint').onclick=function(){window.print()};
- document.getElementById('btnReset').onclick=function(){
-  if(!confirm('Effacer toute la fiche ?'))return;
-  document.querySelectorAll('input,textarea').forEach(function(e){e.value=''});
-  document.querySelectorAll('.eval input').forEach(function(e){e.checked=false});
-  document.querySelectorAll('canvas.pad').forEach(function(c){c.clearPad()});
- };
-})();
-</script>
-</body>
-</html>
+const SUPABASE_URL="https://zqpnryrzwfetbysawkae.supabase.co";
+const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGciOiJIUzI1NiIsInR5cCI6ImFub24iLCJpYXQiOjE3OTIwOTQ0MjYsImV4cCI6MjEwNzY3MDQyNn0.luUdKRptpEo6bXhxc5EWdfnk4vkMiVEsuGLLtcnAIZA";
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const API=SUPABASE_URL+"/functions/v1/formation-api";
+const $=id=>document.getElementById(id);
+let currentSession=null,currentSessionId=null,editingId=null,adminToken=null,adminUser=null,attendees=[],adminSig=null,participantSig=null;
+function show(id){["loginPanel","dashboard","editor","detailPanel","participantPanel","welcome"].forEach(x=>$(x).classList.add("hidden"));if(id)$(id).classList.remove("hidden");}
+function msg(id,t,err=false){$(id).textContent=t;$(id).className=err?"hint error":"hint success";}
+async function api(action,data={},admin=false){const headers={"Content-Type":"application/json","apikey":SUPABASE_ANON_KEY};if(admin){const {data:{session}}=await sb.auth.getSession();if(!session)throw Error("Session administrateur expirée.");headers.Authorization="Bearer "+session.access_token;}const r=await fetch(API,{method:"POST",headers,body:JSON.stringify({action,...data})});const j=await r.json();if(!r.ok)throw Error(j.error||"Erreur de communication.");return j;}
+function setupPad(c){const ctx=c.getContext("2d");let down=false,last=null;function fit(){const r=c.getBoundingClientRect(),d=devicePixelRatio||1;c.width=Math.max(1,r.width*d);c.height=Math.max(1,r.height*d);ctx.setTransform(d,0,0,d,0,0);ctx.lineWidth=2;ctx.lineCap="round";ctx.strokeStyle="#176fa6";}fit();new ResizeObserver(fit).observe(c);function pos(e){const r=c.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top};}c.addEventListener("pointerdown",e=>{down=true;last=pos(e);c.setPointerCapture(e.pointerId);e.preventDefault();});c.addEventListener("pointermove",e=>{if(!down)return;const p=pos(e);ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;});["pointerup","pointercancel"].forEach(n=>c.addEventListener(n,()=>down=false));c.clear=()=>ctx.clearRect(0,0,c.width,c.height);c.data=()=>c.toDataURL("image/png");c.load=data=>{c.clear();if(data){const im=new Image();im.onload=()=>ctx.drawImage(im,0,0,c.width/(devicePixelRatio||1),c.height/(devicePixelRatio||1));im.src=data;}};return c;}
+adminSig=setupPad($("adminSignature"));participantSig=setupPad($("participantSignature"));
+$("clearAdminSig").onclick=()=>adminSig.clear();$("clearParticipantSig").onclick=()=>participantSig.clear();
+function sessionPayload(){return{client:$("a_client").value.trim(),training_date:$("a_date").value||null,trainer:$("a_trainer").value.trim(),theme:$("a_theme").value.trim(),schedule:$("a_schedule").value.trim(),programme:$("a_programme").value,trainer_signature:adminSig.data()};}
+function fillEditor(s){$("a_date").value=s.training_date||"";$("a_client").value=s.client||"";$("a_trainer").value=s.trainer||"";$("a_theme").value=s.theme||"";$("a_schedule").value=s.schedule||"";$("a_programme").value=s.programme||"";adminSig.load(s.trainer_signature);editingId=s.id||null;$("editorTitle").textContent=editingId?"Modifier la fiche":"Nouvelle fiche de formation";show("editor");}
+async function loadDashboard(){show("dashboard");$("sessionList").innerHTML="Chargement…";try{const {sessions}=await api("list_sessions",{},true);$("sessionList").innerHTML="";if(!sessions.length){$("sessionList").innerHTML='<p class="muted">Aucune fiche créée pour le moment.</p>';return;}sessions.forEach(s=>{const d=document.createElement("div");d.className="session";d.innerHTML='<div><strong></strong><span class="muted"></span><div class="small"></div></div><div class="toolbar"><button class="primary">Consulter</button><button>Copier le lien</button></div>';d.querySelector("strong").textContent=s.theme||"Formation sans thème";d.querySelector(".muted").textContent=[s.client,s.training_date,s.trainer].filter(Boolean).join(" · ");d.querySelector(".small").textContent=s.attendee_count+" participant(s)";d.querySelectorAll("button")[0].onclick=()=>openDetail(s.id);d.querySelectorAll("button")[1].onclick=()=>copyLink(s.id);$("sessionList").appendChild(d);});}catch(e){$("sessionList").textContent=e.message;}}
+async function openDetail(id){currentSessionId=id;try{const r=await api("get_session",{session_id:id},true);currentSession=r.session;attendees=r.attendees;renderDetail();show("detailPanel");}catch(e){msg("detailMsg",e.message,true);}}
+function renderDetail(){$("detailTitle").textContent=currentSession.theme||"Fiche de formation";$("detailMeta").textContent=[currentSession.client,currentSession.training_date,currentSession.trainer,currentSession.schedule].filter(Boolean).join(" · ");$("detailRows").innerHTML="";if(!attendees.length){$("detailRows").innerHTML='<p class="muted">Aucun participant enregistré.</p>';return;}attendees.forEach((p,i)=>{const d=document.createElement("div");d.className="rowcard";const sig=p.signature?'<img class="signature-img" src="'+p.signature+'">':"—";d.innerHTML='<h4></h4><div class="small"></div><div class="small"></div>';d.querySelector("h4").textContent=(i+1)+". "+p.full_name;d.children[1].textContent="Qualification : "+(p.qualification||"—")+" · Évaluation : "+(p.evaluation||"—");d.children[2].innerHTML="Signature : "+sig+"<br>Observations : "+(escapeHtml(p.observations||"—"));$("detailRows").appendChild(d);});}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function copyLink(id){const u=location.origin+location.pathname+"?session="+id;navigator.clipboard.writeText(u).then(()=>alert("Lien participant copié : "+u)).catch(()=>prompt("Copie ce lien :",u));}
+$("shareBtn").onclick=()=>copyLink(currentSessionId);
+$("newSessionBtn").onclick=()=>fillEditor({});$("cancelEditorBtn").onclick=()=>loadDashboard();
+$("saveSessionBtn").onclick=async()=>{try{const x=sessionPayload();if(!x.client||!x.training_date||!x.trainer||!x.theme)throw Error("Date, client, formateur et thème sont obligatoires.");if(editingId){await api("update_session",{session_id:editingId,session:x},true);msg("editorMsg","Fiche mise à jour.");}else{const r=await api("create_session",{session:x},true);editingId=r.session.id;msg("editorMsg","Fiche créée. Lien : "+location.origin+location.pathname+"?session="+editingId);}await loadDashboard();}catch(e){msg("editorMsg",e.message,true);}};
+$("editSessionBtn").onclick=()=>fillEditor(currentSession);$("backBtn").onclick=loadDashboard;
+function printSession(){const s=currentSession;$("pr_date").value=s.training_date||"";$("pr_client").value=s.client||"";$("pr_trainer").value=s.trainer||"";$("pr_theme").value=s.theme||"";$("pr_schedule").value=s.schedule||"";$("pr_programme").value=s.programme||"";$("pr_trainer_signature").innerHTML=s.trainer_signature?'<img class="signature-img" src="'+s.trainer_signature+'">':"";$("printRows").innerHTML="";attendees.forEach(p=>{const tr=document.createElement("tr");const ev=p.evaluation?["","Faible","Moyen","Bien","Très bien"][p.evaluation]:"";tr.innerHTML='<td></td><td></td><td></td><td></td><td></td>';tr.children[0].textContent=p.full_name;tr.children[1].innerHTML=p.signature?'<img class="signature-img" src="'+p.signature+'">':"";tr.children[2].textContent=p.qualification||"";tr.children[3].textContent=p.evaluation?(p.evaluation+" – "+ev):"";tr.children[4].textContent=p.observations||"";$("printRows").appendChild(tr);});$("printArea").classList.remove("hidden");window.print();setTimeout(()=>$("printArea").classList.add("hidden"),500);}
+$("printBtn").onclick=printSession;
+$("deleteAllBtn").onclick=async()=>{if(!confirm("Confirmer la suppression définitive de TOUTES les fiches et de tous les participants ?"))return;if(!confirm("Dernière confirmation : cette action est irréversible."))return;try{await api("delete_all",{},true);await loadDashboard();}catch(e){alert(e.message);}};
+$("adminBtn").onclick=async()=>{const {data:{session}}=await sb.auth.getSession();if(session){adminToken=session.access_token;loadDashboard();}else show("loginPanel");};
+$("welcomeAdmin").onclick=()=>$("adminBtn").click();$("homeBtn").onclick=()=>{if(new URLSearchParams(location.search).has("session")){show("participantPanel");}else{show("welcome");}};
+$("loginBtn").onclick=async()=>{msg("loginMsg","Connexion…");const {data,error}=await sb.auth.signInWithPassword({email:$("loginEmail").value,password:$("loginPassword").value});if(error){msg("loginMsg",error.message,true);return;}try{await api("list_sessions",{},true);adminUser=data.user;loadDashboard();}catch(e){await sb.auth.signOut();msg("loginMsg","Ce compte ne dispose pas du rôle administrateur : "+e.message,true);}};
+$("logoutBtn").onclick=async()=>{await sb.auth.signOut();show("loginPanel");};
+async function loadParticipant(id){currentSessionId=id;show("participantPanel");try{const r=await api("get_public_session",{session_id:id});currentSession=r.session;attendees=r.attendees;$("participantMeta").textContent=[currentSession.client,currentSession.training_date,currentSession.trainer,currentSession.theme,currentSession.schedule].filter(Boolean).join(" · ");$("publicRoster").textContent=attendees.length?"Participants déjà enregistrés : "+attendees.map(x=>x.full_name).join(", "):"Tu peux être le premier participant à remplir la fiche.";const saved=JSON.parse(localStorage.getItem("formation_"+id)||"null");if(saved){$("p_code").value=saved.code||"";if(saved.attendee_id){$("p_name").value=saved.name||"";}}}catch(e){$("participantMeta").textContent=e.message;}}
+$("submitParticipant").onclick=async()=>{const name=$("p_name").value.trim();if(!name){msg("participantMsg","Saisis ton nom et prénom.",true);return;}const saved=JSON.parse(localStorage.getItem("formation_"+currentSessionId)||"null");const code=$("p_code").value.trim()||(saved&&saved.code)||"";const payload={full_name:name,qualification:$("p_qualification").value,evaluation:$("p_evaluation").value?Number($("p_evaluation").value):null,observations:$("p_observations").value,signature:participantSig.data()};try{const r=await api("submit_attendee",{session_id:currentSessionId,attendee_id:code&&saved?saved.attendee_id:null,access_code:code,attendee:payload});if(r.created){localStorage.setItem("formation_"+currentSessionId,JSON.stringify({attendee_id:r.attendee.id,code:r.access_code,name}));$("p_code").value=r.access_code;$("personalCode").textContent=r.access_code;$("codeResult").classList.remove("hidden");}else{localStorage.setItem("formation_"+currentSessionId,JSON.stringify({attendee_id:r.attendee.id,code,name}));$("codeResult").classList.add("hidden");}msg("participantMsg",r.created?"Ta ligne a été enregistrée. Conserve ton code personnel.":"Ta propre ligne a été mise à jour.");const list=await api("get_public_session",{session_id:currentSessionId});attendees=list.attendees;$("publicRoster").textContent="Participants enregistrés : "+attendees.map(x=>x.full_name).join(", ");}catch(e){msg("participantMsg",e.message,true);}};
+$("copyCode").onclick=()=>navigator.clipboard.writeText($("personalCode").textContent).then(()=>alert("Code copié."));
+(async()=>{const id=new URLSearchParams(location.search).get("session");if(id)await loadParticipant(id);else show("welcome");})();
+</script></body></html>
