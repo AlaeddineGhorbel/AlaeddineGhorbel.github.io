@@ -58,7 +58,10 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
   #sheetToolbar, .btns, .noprint, .hint, .clr, #sheetMsg { display:none!important; }
   .head { display:grid!important; grid-template-columns:28% 48% 24%!important; min-height:22mm!important; margin:0 0 5mm!important; border:1px solid #000!important; break-inside:avoid!important; }
   .head>div { padding:3mm!important; }
-  .head img { display:block!important; max-width:100%!important; height:15mm!important; object-fit:contain!important; background:#fff!important; }
+  /* Le logo occupe toute la cellule de gauche, sans marges internes. */
+  .head .logo { padding:0!important; min-width:0!important; overflow:hidden!important; }
+  .head .logo img { display:block!important; width:100%!important; max-width:none!important; height:22mm!important; max-height:none!important; padding:0!important; margin:0!important; object-fit:contain!important; object-position:center!important; background:#fff!important; border-radius:0!important; }
+  .head .logo .logo-fallback { display:none!important; }
   .logo-fallback { font-family:Arial,sans-serif!important; font-size:20pt!important; font-weight:700!important; color:#145b78!important; }
   .head .t { border-left:1px solid #000!important; border-right:1px solid #000!important; font-size:11pt!important; }
   .head .t small { font-size:9pt!important; }
