@@ -14,7 +14,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-appl
 .head{display:grid;grid-template-columns:1fr 1.4fr .8fr;border:1px solid var(--border);margin-bottom:16px}
 .head>div{padding:8px;display:flex;align-items:center;justify-content:center;text-align:center}
 .head .logo{background:#fff;padding:0!important;overflow:hidden;min-width:0;min-height:76px}
-.head .logo img{display:block;width:100%;max-width:none;height:76px;min-height:76px;object-fit:contain;object-position:center;background:#fff;padding:3px;border-radius:0}
+.head .logo img{display:block;width:100%;max-width:none;height:76px;min-height:76px;object-fit:cover;object-position:center;background:#fff;padding:0;margin:0;border-radius:0}
 .head .logo .logo-fallback{font-family:Arial,sans-serif;font-size:24pt;font-weight:700;color:#145b78}
 .head .t{flex-direction:column;font-weight:700;border-left:1px solid var(--border);border-right:1px solid var(--border)}
 .head .t small{font-size:12px;border-bottom:1px solid var(--border);width:100%;padding-bottom:4px;margin-bottom:4px}
@@ -61,7 +61,7 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
   .head { display:grid!important; grid-template-columns:28% 48% 24%!important; min-height:16mm!important; margin:0 0 5mm!important; border:1px solid #315b70!important; break-inside:avoid!important; background:#f5f9fb!important; }
   .head>div { padding:3mm!important; }
   .head .logo { padding:0!important; min-width:0!important; overflow:hidden!important; }
-  .head .logo img { display:block!important; width:100%!important; max-width:none!important; height:16mm!important; min-height:16mm!important; max-height:16mm!important; padding:0!important; margin:0!important; object-fit:contain!important; object-position:center!important; background:#fff!important; border-radius:0!important; }
+  .head .logo img { display:block!important; width:100%!important; max-width:none!important; height:16mm!important; min-height:16mm!important; max-height:16mm!important; padding:0!important; margin:0!important; object-fit:cover!important; object-position:center!important; background:#fff!important; border-radius:0!important; }
   .head .logo .logo-fallback { display:none!important; }
   .head .t { border-left:1px solid #9bb4c1!important; border-right:1px solid #9bb4c1!important; font-size:11pt!important; color:#174d68!important; background:#f5f9fb!important; }
   .head .t small { font-size:9pt!important; color:#557486!important; }
@@ -184,7 +184,7 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
 
 <div id="printArea" class="sheet hidden">
  <div class="toolbar noprint" id="sheetToolbar">
-  <button class="main" id="saveSessionInline">Enregistrer la fiche</button><button class="main" id="printBtn">Imprimer</button><button type="button" id="importOldSheetBtn">Importer une ancienne fiche</button>
+  <button class="main" id="saveSessionInline">Enregistrer la fiche</button><button class="main" id="printBtn">Imprimer</button><button type="button" id="importOldSheetBtn" class="hidden">Importer une ancienne fiche</button>
   <button id="addAdminRowBtn">+ Ajouter une ligne</button>
   
   
@@ -375,6 +375,7 @@ async function refreshPublicSessionList(){
 
 let oldSheetImageUrl="";
 const importOldSheetBtn=$("importOldSheetBtn"), oldSheetImport=$("oldSheetImport"), closeOldSheetImportBtn=$("closeOldSheetImportBtn"), oldSheetFile=$("oldSheetFile");
+if(importOldSheetBtn) importOldSheetBtn.classList.toggle("hidden",!trainerInfo?.is_admin);
 if(importOldSheetBtn && oldSheetImport) importOldSheetBtn.addEventListener("click",()=>oldSheetImport.classList.remove("hidden"));
 if(closeOldSheetImportBtn && oldSheetImport) closeOldSheetImportBtn.addEventListener("click",()=>oldSheetImport.classList.add("hidden"));
 if(oldSheetFile) oldSheetFile.addEventListener("change",()=>{const f=oldSheetFile.files?.[0];if(!f)return;if(oldSheetImageUrl)URL.revokeObjectURL(oldSheetImageUrl);oldSheetImageUrl=URL.createObjectURL(f);const preview=$("oldSheetPreview"),txt=$("oldSheetText"),progress=$("oldSheetProgress");if(preview){preview.src=oldSheetImageUrl;preview.classList.remove("hidden");}if(txt)txt.value="";if(progress)progress.textContent="Photo chargée. Appuie sur « Reconnaître le texte ».";});
