@@ -173,6 +173,9 @@ const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGciOiJIUzI1Ni
 const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 const API=SUPABASE_URL+"/functions/v1/formation-api";
 const $=id=>document.getElementById(id);
+function escapeHtml(value){
+ return String(value??"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[char]));
+}
 function displayRuntimeError(message,details=""){
  const box=$("runtimeError"),out=$("runtimeErrorText");
  if(!box||!out)return;
