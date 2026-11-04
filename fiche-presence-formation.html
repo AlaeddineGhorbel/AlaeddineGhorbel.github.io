@@ -189,7 +189,7 @@ $("copyCode").onclick=()=>navigator.clipboard.writeText($("personalCode").textCo
 let liveRefreshTimer=null;(async()=>{
  const querySession=new URLSearchParams(location.search).get("session");
  const saved=localStorage.getItem("formation_trainer_session");
- if(querySession){await openDetail(querySession);return;}
+ if(querySession){await loadParticipant(querySession);return;}
  if(saved){await openDetail(saved);if(currentSessionId)return;}
  if(localStorage.getItem("formation_trainer_code")){
   try{
