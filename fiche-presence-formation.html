@@ -13,7 +13,9 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-appl
 .sheet{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px}
 .head{display:grid;grid-template-columns:1fr 1.4fr .8fr;border:1px solid var(--border);margin-bottom:16px}
 .head>div{padding:8px;display:flex;align-items:center;justify-content:center;text-align:center}
-.head .logo{background:transparent}.head img{max-width:100%;height:46px;object-fit:contain;background:#fff;padding:5px 12px;border-radius:8px}
+.head .logo{background:#fff;padding:0!important;overflow:hidden;min-width:0;min-height:112px}
+.head .logo img{display:block;width:100%;max-width:none;height:100%;min-height:112px;object-fit:contain;object-position:center;background:#fff;padding:4px;border-radius:0}
+.head .logo .logo-fallback{font-family:Arial,sans-serif;font-size:24pt;font-weight:700;color:#145b78}
 .head .t{flex-direction:column;font-weight:700;border-left:1px solid var(--border);border-right:1px solid var(--border)}
 .head .t small{font-size:12px;border-bottom:1px solid var(--border);width:100%;padding-bottom:4px;margin-bottom:4px}
 .head .ref{font-size:12px;text-align:left;justify-content:flex-start}
@@ -60,7 +62,7 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
   .head>div { padding:3mm!important; }
   /* Le logo occupe toute la cellule de gauche, sans marges internes. */
   .head .logo { padding:0!important; min-width:0!important; overflow:hidden!important; }
-  .head .logo img { display:block!important; width:100%!important; max-width:none!important; height:22mm!important; max-height:none!important; padding:0!important; margin:0!important; object-fit:contain!important; object-position:center!important; background:#fff!important; border-radius:0!important; }
+  .head .logo img { display:block!important; width:100%!important; max-width:none!important; height:100%!important; min-height:22mm!important; max-height:none!important; padding:0!important; margin:0!important; object-fit:contain!important; object-position:center!important; background:#fff!important; border-radius:0!important; }
   .head .logo .logo-fallback { display:none!important; }
   .logo-fallback { font-family:Arial,sans-serif!important; font-size:20pt!important; font-weight:700!important; color:#145b78!important; }
   .head .t { border-left:1px solid #000!important; border-right:1px solid #000!important; font-size:11pt!important; }
