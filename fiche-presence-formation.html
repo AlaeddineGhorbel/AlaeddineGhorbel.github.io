@@ -245,9 +245,20 @@ $("unlockTrainerMode").onclick=async()=>{
   $("printArea").scrollIntoView({behavior:"smooth",block:"start"});
  }catch(e){$("trainerAccessMsg").textContent=e.message;$("trainerAccessMsg").className="hint error";}
 };
+async function refreshPublicSessionList(){
+ try{
+  const keep=$("publicSessionSelect").value||currentSessionId;
+  const r=await api("list_public_active_sessions");
+  const list=r.sessions||[],sel=$("publicSessionSelect");sel.innerHTML="";
+  if(!list.length){const o=document.createElement("option");o.value="";o.textContent="Aucune fiche active — vous pouvez en créer une";sel.appendChild(o);$("participantPanel").classList.remove("hidden");$("publicEmpty").classList.add("hidden");return;}
+  for(const s of list){const o=document.createElement("option");o.value=s.id;o.textContent="Formateur : "+(s.trainer||"À préciser")+" | Client : "+(s.client||"À préciser")+" | Thème : "+(s.theme||"À préciser")+" | Date : "+(s.training_date||"À préciser");sel.appendChild(o);}
+  const chosen=list.find(s=>s.id===keep)||list[0];sel.value=chosen.id;
+  if(!keep||!list.some(s=>s.id===keep))await loadParticipant(chosen.id);
+ }catch(e){}
+}
 let liveRefreshTimer=null;(async()=>{
  const querySession=new URLSearchParams(location.search).get("session");
  await loadPublicSessions(querySession||null);
- liveRefreshTimer=window.setInterval(async()=>{const selected=$("publicSessionSelect").value;await loadPublicSessions(selected||null);},30000);
+ liveRefreshTimer=window.setInterval(refreshPublicSessionList,30000);
 })();
 </script></body></html>
