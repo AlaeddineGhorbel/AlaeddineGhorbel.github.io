@@ -47,42 +47,7 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
  .noprint{display:flex}.public-footer{display:flex!important;justify-content:center;align-items:center;padding:20px 8px 8px;margin-top:18px;border-top:1px solid var(--border);width:100%}.public-footer button{display:inline-flex;justify-content:center;min-width:220px;padding:11px 20px;font-size:14px;font-weight:600;color:var(--text);background:var(--thead);border:1px solid var(--border);border-radius:8px}.signature-img{max-width:170px;max-height:52px;object-fit:contain}
 @media (max-width:560px){.fields{grid-template-columns:1fr}.head{grid-template-columns:1fr}.head .t{border:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}}
-@media screen and (max-width:900px){
- .wrap{padding:8px}.sheet{padding:12px}
- .fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
- .head{grid-template-columns:1fr}.head .t{border:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
- .toolbar,.btns{gap:7px}.toolbar button,.btns button{flex:1 1 auto;min-width:0}
- #sheetToolbar #sessionHistoryLabel{flex:1 1 100%;min-width:0}
- #sheetToolbar #sessionHistory{width:100%;max-width:none!important}
- .tw{width:100%;max-width:100%;overflow:visible}
- .tw table,.tw tbody,.tw tr,.tw td{display:block;width:100%;min-width:0}
- .tw thead{display:none}
- .tw tr{border:1px solid var(--border);border-radius:10px;margin:0 0 12px;padding:8px;background:var(--card);overflow:hidden}
- .tw td{display:block;width:100%;border:0;border-bottom:1px solid var(--border);padding:7px 2px;text-align:left;min-width:0}
- .tw td:last-child{border-bottom:0}
- .tw td::before{content:attr(data-label);display:block;font-size:12px;font-weight:700;color:var(--muted);margin:0 0 4px}
- .tw td input{display:block;width:100%;max-width:100%;min-width:0;border:1px solid var(--border);border-radius:6px;min-height:42px;padding:8px}
- .tw td.sig{padding:7px 2px}
- .tw td.sig>div{width:100%;max-width:100%;min-width:0}
- .tw td.sig button,.tw td.sig .signature-open{width:100%;max-width:100%;min-height:48px}
- .tw td.ev{text-align:left}
- .tw .eval{display:flex;justify-content:flex-start;align-items:center;flex-wrap:wrap;gap:8px}
- .tw .eval label{flex:0 0 auto}
- .tw .eval span{width:38px;height:38px}
- .tw td.noprint{display:block!important}
- .tw td.noprint>div{display:flex;justify-content:flex-start;flex-wrap:wrap;gap:7px}
- .tw td.noprint button{flex:0 0 auto;min-width:44px;min-height:42px;padding:8px 12px}
- canvas.pad{border:1px dashed var(--border);border-radius:6px}
- .prog textarea{width:100%;max-width:100%}
- .fsig{max-width:100%}
-}
-@media screen and (max-width:480px){
- .fields{grid-template-columns:1fr}
- .sheet{padding:9px}
- .head .ref{justify-content:center;text-align:center}
- .tw .eval{gap:6px}
- .tw .eval span{width:36px;height:36px}
-}
+
 /* Ancienne règle noir et blanc supprimée : impression gérée par le bloc unique ci-dessous. */
 
 @media print {
@@ -130,41 +95,41 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
 
 #runtimeError{display:none;margin:12px 0;padding:14px 16px;border:2px solid #b42318;border-radius:10px;background:#fff1f0;color:#8f1711;font-weight:600;white-space:pre-wrap;overflow-wrap:anywhere}#runtimeError strong{display:block;margin-bottom:5px;font-size:16px}#runtimeError small{display:block;margin-top:7px;font-weight:400;color:#7a271a}
 
-/* Correctif responsive renforcé : téléphone, tablette et navigateur Android en mode bureau */
-@media screen and (max-width:1200px){
+/* Responsive : tableau classique sur ordinateur, cartes empilées uniquement sur petit écran */
+@media screen and (max-width:760px){
  html,body{max-width:100%;overflow-x:hidden}
  .wrap{width:100%;max-width:100%;padding:8px}
  .sheet,.panel{width:100%;max-width:100%;padding:10px}
- .fields{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:10px!important}
+ .fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
  .toolbar{display:flex;flex-wrap:wrap;gap:7px}
  .toolbar>*{max-width:100%;min-width:0}
  #sheetToolbar #sessionHistoryLabel{flex:1 1 100%;width:100%}
  #sheetToolbar #sessionHistory{display:block;width:100%;max-width:100%}
- .tw{display:block;width:100%;max-width:100%;overflow:visible!important}
- .tw table,.tw tbody,.tw tr,.tw td{display:block!important;width:100%!important;min-width:0!important;max-width:100%!important}
- .tw thead{display:none!important}
- .tw tr{height:auto!important;margin:0 0 12px!important;padding:8px!important;border:1px solid var(--border)!important;border-radius:10px!important;background:var(--card)!important;overflow:hidden!important}
- .tw td{height:auto!important;box-sizing:border-box!important;padding:8px 2px!important;border:0!important;border-bottom:1px solid var(--border)!important;text-align:left!important;white-space:normal!important}
- .tw td:last-child{border-bottom:0!important}
- .tw td::before{content:attr(data-label)!important;display:block!important;margin:0 0 5px!important;font-size:12px!important;font-weight:700!important;color:var(--muted)!important}
- .tw td input{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;min-height:42px!important;padding:8px!important;border:1px solid var(--border)!important;border-radius:6px!important}
- .tw td.sig>div{width:100%!important;max-width:100%!important}
- .tw td.sig .signature-open{width:100%!important;min-height:50px!important}
- .tw .eval{display:flex!important;justify-content:flex-start!important;align-items:center!important;flex-wrap:wrap!important;gap:8px!important}
- .tw .eval label{flex:0 0 auto!important}
- .tw .eval span{width:38px!important;height:38px!important}
+ .tw{display:block;width:100%;max-width:100%;overflow:visible}
+ .tw table,.tw tbody,.tw tr,.tw td{display:block;width:100%;min-width:0;max-width:100%}
+ .tw thead{display:none}
+ .tw tr{height:auto;margin:0 0 12px;padding:8px;border:1px solid var(--border);border-radius:10px;background:var(--card);overflow:hidden}
+ .tw td{height:auto;box-sizing:border-box;padding:8px 2px;border:0;border-bottom:1px solid var(--border);text-align:left;white-space:normal}
+ .tw td:last-child{border-bottom:0}
+ .tw td::before{content:attr(data-label);display:block;margin:0 0 5px;font-size:12px;font-weight:700;color:var(--muted)}
+ .tw td input{display:block;width:100%;max-width:100%;min-width:0;min-height:42px;padding:8px;border:1px solid var(--border);border-radius:6px}
+ .tw td.sig>div{width:100%;max-width:100%}
+ .tw td.sig .signature-open{width:100%;min-height:50px}
+ .tw .eval{display:flex;justify-content:flex-start;align-items:center;flex-wrap:wrap;gap:8px}
+ .tw .eval label{flex:0 0 auto}
+ .tw .eval span{width:38px;height:38px}
  .tw td.noprint{display:block!important}
- .tw td.noprint>div{display:flex!important;justify-content:flex-start!important;flex-wrap:wrap!important;gap:8px!important}
- .tw td.noprint button{min-width:44px!important;min-height:42px!important}
- .prog textarea{display:block;width:100%!important;max-width:100%!important}
+ .tw td.noprint>div{display:flex;justify-content:flex-start;flex-wrap:wrap;gap:8px}
+ .tw td.noprint button{min-width:44px;min-height:42px}
+ .prog textarea{display:block;width:100%;max-width:100%}
  .fsig{width:100%;max-width:320px}
 }
 @media screen and (max-width:600px){
- .fields{grid-template-columns:minmax(0,1fr)!important}
+ .fields{grid-template-columns:minmax(0,1fr)}
  .sheet,.panel{padding:8px}
- .head{grid-template-columns:1fr!important}
- .head .t{border:0!important;border-top:1px solid var(--border)!important;border-bottom:1px solid var(--border)!important}
- .tw .eval span{width:36px!important;height:36px!important}
+ .head{grid-template-columns:1fr}
+ .head .t{border:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+ .tw .eval span{width:36px;height:36px}
 }
 </style>
 </head>
@@ -230,7 +195,7 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
   <label>Thème<input type="text" id="pr_theme" autocomplete="off"></label>
   <label>Horaire<input type="text" id="pr_schedule" placeholder="ex. 09:00 – 12:00" autocomplete="off"></label>
  </div>
- <div class="tw"><table><thead><tr><th>Nom et Prénom</th><th>Signature</th><th>Qualification</th><th>Évaluation (*)</th><th>Observation(s)</th></tr></thead><tbody id="printRows"></tbody></table></div>
+ <div class="tw"><table><thead><tr><th>Nom et Prénom</th><th>Date de participation</th><th>Signature</th><th>Qualification</th><th>Évaluation (*)</th><th>Observation(s)</th><th class="noprint">Actions</th></tr></thead><tbody id="printRows"></tbody></table></div>
  <div class="legend">* : 1 Faible / 2 Moyen / 3 Bien / 4 Très bien</div>
  <div class="prog"><h3>Programme de formation :</h3><textarea id="pr_programme"></textarea></div>
  <div class="fsig"><b>Signature Formateur</b><div id="adminSignatureControl"></div></div>
@@ -302,7 +267,7 @@ function buildTrainerAttendeeRow(p={},isDraft=false){
  const tr=document.createElement("tr");tr.className=isDraft?"draft-row":"saved-row";
  ["Nom et Prénom","Date de participation","Signature","Qualification","Évaluation (*)","Observation(s)","Actions"].forEach((label,i)=>{const td=document.createElement("td");td.dataset.label=label;if(i===2)td.className="sig";if(i===4)td.className="ev";if(i===6)td.className="noprint";tr.appendChild(td);});
  const name=document.createElement("input");name.type="text";name.className="row-name";name.value=p.full_name||"";name.placeholder="Nom et prénom";tr.children[0].appendChild(name);
- const date=document.createElement("input");date.type="date";date.className="row-date";date.value=p.participation_date||currentSession?.training_date||$("pr_date").value||"";tr.children[1].appendChild(date);
+ const date=document.createElement("input");date.type="date";date.className="row-date";date.value=p.participation_date||currentSession?.training_date||$("pr_date").value||new Date().toLocaleDateString("en-CA");tr.children[1].appendChild(date);
  const sigHost=document.createElement("div");tr.children[2].appendChild(sigHost);const pad=createSignatureControl(sigHost,"Signature du participant");pad.load(p.signature||"");tr._signatureControl=pad;
  const qual=document.createElement("input");qual.type="text";qual.className="row-qualification";qual.value=p.qualification||"";qual.placeholder="Qualification";tr.children[3].appendChild(qual);
  const evName="rowEval"+Math.random().toString(36).slice(2),evalHost=document.createElement("div");evalHost.className="eval";[1,2,3,4].forEach(v=>{const lab=document.createElement("label");lab.title=String(v);const radio=document.createElement("input");radio.type="radio";radio.name=evName;radio.value=String(v);radio.checked=Number(p.evaluation)===v;const span=document.createElement("span");span.textContent=String(v);lab.append(radio,span);evalHost.appendChild(lab);});tr.children[4].appendChild(evalHost);
@@ -315,7 +280,7 @@ function buildTrainerAttendeeRow(p={},isDraft=false){
  function setEditing(on){editing=on;controls.forEach(x=>{if(x.type==="radio")x.disabled=!on;else x.readOnly=!on;});const sb=sigHost.querySelector("button");if(sb)sb.disabled=!on;save.classList.toggle("hidden",!on);edit.classList.toggle("hidden",on);tr.classList.toggle("row-closed",!on);}
  setEditing(editing);
  edit.onclick=async()=>{try{await api("trainer_save_attendee",{session_id:currentSessionId,attendee_id:p.id,attendee:{full_name:p.full_name,signature:p.signature,qualification:p.qualification,evaluation:p.evaluation,observations:p.observations,participation_date:p.participation_date||currentSession?.training_date,is_closed:false}});await openDetail(currentSessionId);}catch(e){msg("sheetMsg",e.message,true);}};
- save.onclick=async()=>{if(!name.value.trim()){msg("sheetMsg","Saisis le nom et prénom avant de valider la ligne.",true);name.focus();return;}save.disabled=true;try{const checked=evalHost.querySelector('input[type="radio"]:checked');await api("trainer_save_attendee",{session_id:currentSessionId,attendee_id:p.id||undefined,attendee:{full_name:name.value.trim(),signature:pad.data(),qualification:qual.value,evaluation:checked?Number(checked.value):null,observations:obs.value,participation_date:date.value||currentSession?.training_date,is_closed:true}});await openDetail(currentSessionId);msg("sheetMsg","Ligne enregistrée et validée.");}catch(e){msg("sheetMsg",e.message,true);}finally{save.disabled=false;}};
+ save.onclick=async()=>{if(!name.value.trim()){msg("sheetMsg","Saisis le nom et prénom avant de valider la ligne.",true);name.focus();return;}save.disabled=true;try{const checked=evalHost.querySelector('input[type="radio"]:checked');await api("trainer_save_attendee",{session_id:currentSessionId,attendee_id:p.id||undefined,attendee:{full_name:name.value.trim(),signature:pad.data(),qualification:qual.value,evaluation:checked?Number(checked.value):null,observations:obs.value,participation_date:date.value||currentSession?.training_date||$("pr_date").value||new Date().toLocaleDateString("en-CA"),is_closed:true}});await openDetail(currentSessionId);msg("sheetMsg","Ligne enregistrée et validée.");}catch(e){msg("sheetMsg",e.message,true);}finally{save.disabled=false;}};
  del.onclick=async()=>{if(isDraft){tr.remove();return;}if(!confirm("Supprimer définitivement la ligne de "+(p.full_name||"ce participant")+" ?"))return;del.disabled=true;try{await api("trainer_delete_attendee",{session_id:currentSessionId,attendee_id:p.id});await openDetail(currentSessionId);msg("sheetMsg","Ligne supprimée.");}catch(e){msg("sheetMsg",e.message,true);del.disabled=false;}};
  return tr;
 }
