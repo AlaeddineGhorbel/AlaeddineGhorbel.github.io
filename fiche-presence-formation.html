@@ -42,7 +42,7 @@ textarea{min-height:90px;resize:vertical}.fsig{margin-top:16px;max-width:320px}.
 button{font:inherit;border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:8px;padding:10px 14px;cursor:pointer}
 button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
 .clr{font-size:11px;padding:2px 6px;margin-top:2px;border-radius:4px}.hint{font-size:13px;color:var(--muted)}
-.hidden{display:none!important}.error{color:#b42318}.success{color:#16794a}
+.hidden{display:none!important}.error{color:#b42318}.success{color:#16794a}td.noprint,th.noprint{display:table-cell}.row-closed{opacity:.92}.row-closed input{background:rgba(120,130,140,.06)}
 .panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
  .noprint{display:flex}.public-footer{display:flex!important;justify-content:center;align-items:center;padding:20px 8px 8px;margin-top:18px;border-top:1px solid var(--border);width:100%}.public-footer button{display:inline-flex;justify-content:center;min-width:220px;padding:11px 20px;font-size:14px;font-weight:600;color:var(--text);background:var(--thead);border:1px solid var(--border);border-radius:8px}.signature-img{max-width:170px;max-height:52px;object-fit:contain}
@@ -230,7 +230,7 @@ function buildTrainerAttendeeRow(p={},isDraft=false){
  const tr=document.createElement("tr");tr.className=isDraft?"draft-row":"saved-row";
  ["Nom et Prénom","Date de participation","Signature","Qualification","Évaluation (*)","Observation(s)","Actions"].forEach((label,i)=>{const td=document.createElement("td");td.dataset.label=label;if(i===2)td.className="sig";if(i===4)td.className="ev";if(i===6)td.className="noprint";tr.appendChild(td);});
  const name=document.createElement("input");name.type="text";name.className="row-name";name.value=p.full_name||"";name.placeholder="Nom et prénom";tr.children[0].appendChild(name);
- const date=document.createElement("input");date.type="date";date.className="row-date";date.value=p.participation_date||currentSession?.training_date||new Date().toISOString().slice(0,10);tr.children[1].appendChild(date);
+ const date=document.createElement("input");date.type="date";date.className="row-date";date.value=p.participation_date||currentSession?.training_date||$("pr_date").value||"";tr.children[1].appendChild(date);
  const sigHost=document.createElement("div");tr.children[2].appendChild(sigHost);const pad=createSignatureControl(sigHost,"Signature du participant");pad.load(p.signature||"");tr._signatureControl=pad;
  const qual=document.createElement("input");qual.type="text";qual.className="row-qualification";qual.value=p.qualification||"";qual.placeholder="Qualification";tr.children[3].appendChild(qual);
  const evName="rowEval"+Math.random().toString(36).slice(2),evalHost=document.createElement("div");evalHost.className="eval";[1,2,3,4].forEach(v=>{const lab=document.createElement("label");lab.title=String(v);const radio=document.createElement("input");radio.type="radio";radio.name=evName;radio.value=String(v);radio.checked=Number(p.evaluation)===v;const span=document.createElement("span");span.textContent=String(v);lab.append(radio,span);evalHost.appendChild(lab);});tr.children[4].appendChild(evalHost);
