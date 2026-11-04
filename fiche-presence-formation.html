@@ -107,7 +107,7 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
   </label>
  </div>
  <div class="panel noprint" style="padding:12px;margin-bottom:14px">
-  <div class="toolbar"><button type="button" id="toggleCreatePublic" class="main">+ Créer une fiche de présence</button><button type="button" id="toggleTrainerAccess">Accès formateur</button></div>
+  <div class="toolbar"><button type="button" id="toggleCreatePublic" class="main">+ Créer une fiche de présence</button><button type="button" id="publicBlankPrintBtn">Imprimer une fiche vierge</button><button type="button" id="toggleTrainerAccess">Accès formateur</button></div>
   <div id="createPublicBox" class="hidden">
    <p class="hint">Créez une fiche depuis votre compte formateur. Elle sera automatiquement rattachée à votre compte.</p>
    <div class="fields">
@@ -135,7 +135,7 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
 
 <div id="printArea" class="sheet hidden">
  <div class="toolbar noprint" id="sheetToolbar">
-  <button class="main" id="saveSessionInline">Enregistrer la fiche</button><button class="main" id="printBtn">Imprimer / Enregistrer en PDF</button>
+  <button class="main" id="saveSessionInline">Enregistrer la fiche</button><button class="main" id="printBtn">Imprimer</button>
   <button id="addAdminRowBtn">+ Ajouter une ligne</button>
   <button id="saveAdminRowsBtn" class="main">Enregistrer les lignes saisies</button>
   
@@ -231,6 +231,22 @@ $("addAdminRowBtn").onclick=()=>addAdminDraftRow();
 $("resetAdminRowsBtn").onclick=()=>{document.querySelectorAll(".draft-row").forEach(r=>{r.querySelectorAll("input").forEach(i=>{if(i.type==="radio")i.checked=false;else i.value="";});if(r._signatureControl)r._signatureControl.clear();});};
 $("saveAdminRowsBtn").onclick=async()=>{const btn=$("saveAdminRowsBtn");const drafts=[...document.querySelectorAll(".draft-row")].filter(r=>r.querySelector(".draft-name").value.trim());if(!currentSessionId){msg("sheetMsg","Enregistre d’abord les informations de la fiche.",true);return;}if(!drafts.length){msg("sheetMsg","Aucune nouvelle ligne à enregistrer.",true);return;}btn.disabled=true;const oldLabel=btn.textContent;btn.textContent="Enregistrement…";msg("sheetMsg","Enregistrement des lignes dans Supabase…");let savedCount=0;try{for(const r of drafts){const ev=r.querySelector('input[type="radio"]:checked');const pad=r._signatureControl;await api("submit_attendee",{session_id:currentSessionId,attendee:{full_name:r.querySelector(".draft-name").value.trim(),signature:pad?pad.data():"",qualification:r.querySelector(".draft-qualification").value,evaluation:ev?Number(ev.value):null,observations:r.querySelector(".draft-observations").value}});savedCount++;}await openDetail(currentSessionId);msg("sheetMsg","Enregistrement réussi : "+savedCount+" ligne(s) ajoutée(s).");}catch(e){msg("sheetMsg","Échec de l’enregistrement des lignes : "+(e.message||"Erreur inconnue."),true);}finally{btn.disabled=false;btn.textContent=oldLabel;}};
 $("printBtn").onclick=()=>{window.print();};
+$("publicBlankPrintBtn").onclick=()=>{
+ const saved={session:currentSession,sessionId:currentSessionId,attendees:attendees,visible:!$("printArea").classList.contains("hidden")};
+ currentSession=null;currentSessionId=null;attendees=[];
+ ["pr_date","pr_client","pr_trainer","pr_theme","pr_schedule","pr_programme"].forEach(id=>$(id).value="");
+ adminSig.clear();$("printRows").innerHTML="";
+ for(let i=0;i<12;i++)addAdminDraftRow();
+ $("printArea").classList.remove("hidden");
+ const restore=()=>{
+  window.removeEventListener("afterprint",restore);
+  currentSession=saved.session;currentSessionId=saved.sessionId;attendees=saved.attendees;
+  renderSheet();
+  if(!saved.visible)$("printArea").classList.add("hidden");
+ };
+ window.addEventListener("afterprint",restore,{once:true});
+ window.print();
+};
 function renderPublicTable(){const inputRow=$("participantInputRow");const rows=attendees.map((p,i)=>{const ev=p.evaluation?["","Faible","Moyen","Bien","Très bien"][p.evaluation]:"";const tr=document.createElement("tr");tr.innerHTML='<td data-label="Nom et Prénom"></td><td class="sig" data-label="Signature"></td><td data-label="Qualification"></td><td class="ev" data-label="Évaluation (*)"></td><td data-label="Observation(s)"></td>';tr.children[0].textContent=(i+1)+". "+(p.full_name||"");if(isSafeSignature(p.signature)){const sigImg=document.createElement("img");sigImg.className="signature-img";sigImg.alt="Signature";sigImg.src=p.signature;tr.children[1].appendChild(sigImg);}tr.children[2].textContent=p.qualification||"";tr.children[3].textContent=p.evaluation?(p.evaluation+" – "+ev):"1 – 2 – 3 – 4";tr.children[4].textContent=p.observations||"";return tr;});$("publicRows").innerHTML="";rows.forEach(r=>$("publicRows").appendChild(r));if(inputRow)$("publicRows").appendChild(inputRow);}
 async function refreshPublicSession(){if(!currentSessionId)return;try{const r=await api("get_public_session",{session_id:currentSessionId});attendees=r.attendees||[];currentSession=r.session;renderPublicTable();}catch(e){}}
 async function loadParticipant(id){currentSessionId=id;localStorage.setItem("formation_last_session",id);show("participantPanel");$("publicEmpty").classList.add("hidden");try{const r=await api("get_public_session",{session_id:id});currentSession=r.session;if(currentSession.status!=="active")throw Error("Cette fiche est terminée. Elle n’accepte plus de nouvelles saisies.");attendees=r.attendees||[];$("publicSessionSelect").value=id;$("participantMeta").innerHTML='<label>Date<input readonly value="'+escapeHtml(currentSession.training_date||"—")+'"></label><label>Client<input readonly value="'+escapeHtml(currentSession.client||"—")+'"></label><label>Formateur<input readonly value="'+escapeHtml(currentSession.trainer||"—")+'"></label><label>Thème<input readonly value="'+escapeHtml(currentSession.theme||"—")+'"></label><label>Horaire<input readonly value="'+escapeHtml(currentSession.schedule||"—")+'"></label>';$("participantProgramme").textContent=currentSession.programme||"—";$("participantTrainerSignature").replaceChildren();if(isSafeSignature(currentSession.trainer_signature)){const tsImg=document.createElement("img");tsImg.className="signature-img";tsImg.alt="Signature formateur";tsImg.src=currentSession.trainer_signature;$("participantTrainerSignature").appendChild(tsImg);}renderPublicTable();$("p_name").value="";$("p_qualification").value="";$("participantEvaluation").querySelectorAll('input[type="radio"]').forEach(x=>x.checked=false);$("p_observations").value="";participantSig.clear();}catch(e){show(null);$("publicEmpty").classList.remove("hidden");$("publicEmpty").innerHTML='<h2>Fiche indisponible</h2><p>'+escapeHtml(e.message)+'</p>';}} 
