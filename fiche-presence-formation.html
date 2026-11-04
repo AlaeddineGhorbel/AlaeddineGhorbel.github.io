@@ -217,6 +217,24 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
 <div id="signatureModal" class="signature-modal hidden" role="dialog" aria-modal="true"><div class="signature-dialog"><h2 id="signatureModalTitle">Signature</h2><p>Signer dans la grande zone avec le doigt ou la souris.</p><canvas id="signatureModalCanvas"></canvas><div class="signature-actions"><button type="button" id="clearModalSignature">Effacer</button><button type="button" id="cancelModalSignature">Annuler</button><button type="button" class="main" id="saveModalSignature">Valider la signature</button></div></div></div>
 <div id="trainerAuthModal" class="signature-modal hidden" role="dialog" aria-modal="true"><div class="signature-dialog"><h2>Accès formateur</h2><div class="btns"><button type="button" id="showTrainerLogin" class="main">Se connecter</button><button type="button" id="showTrainerRegister">Créer un compte</button></div><div id="trainerLoginFields"><label>Nom complet<input id="trainerLoginName" autocomplete="username"></label><label>Mot de passe personnel<input id="trainerLoginPassword" type="password" autocomplete="current-password"></label><button type="button" class="main" id="trainerLoginBtn">Se connecter</button></div><div id="trainerRegisterFields" class="hidden"><label>Nom complet<input id="trainerRegisterName" autocomplete="name"></label><label>Mot de passe d’inscription<input id="trainerRegistrationPassword" type="password" autocomplete="off"></label><label>Mot de passe personnel (8 caractères minimum)<input id="trainerNewPassword" type="password" autocomplete="new-password"></label><button type="button" class="main" id="trainerRegisterBtn">Créer mon compte</button></div><p id="trainerAuthMsg" class="hint" aria-live="polite"></p><div class="signature-actions"><button type="button" id="closeTrainerAuth">Fermer</button></div></div></div>
 <div id="adminAuthModal" class="signature-modal hidden" role="dialog" aria-modal="true"><div class="signature-dialog"><h2>Accès administrateur</h2><p>Connexion réservée à l’administrateur CliniSys.</p><label>Mot de passe administrateur<input id="adminLoginPassword" type="password" autocomplete="current-password"></label><p id="adminAuthMsg" class="hint" aria-live="polite"></p><div class="signature-actions"><button type="button" id="closeAdminAuth">Fermer</button><button type="button" class="main" id="adminLoginBtn">Se connecter</button></div></div></div>
+<div id="oldSheetImport" class="import-dialog hidden noprint" role="dialog" aria-modal="true" aria-labelledby="oldSheetImportTitle">
+ <div class="import-card">
+  <h2 id="oldSheetImportTitle">Importer une ancienne fiche papier</h2>
+  <p>Ajoute une photo nette ou un scan. La reconnaissance extrait le texte et propose les noms des participants. Vérifie les résultats avant de préremplir la fiche.</p>
+  <input id="oldSheetFile" type="file" accept="image/*">
+  <img id="oldSheetPreview" class="hidden" alt="Aperçu de l'ancienne fiche">
+  <p id="oldSheetProgress" class="hint" aria-live="polite"></p>
+  <label>Texte reconnu – tu peux le corriger avant l'analyse
+   <textarea id="oldSheetText" placeholder="Le texte reconnu apparaîtra ici…"></textarea>
+  </label>
+  <p class="hint">Les signatures manuscrites ne peuvent pas être recréées fidèlement par OCR. Pour les conserver, importe pour chaque participant une image de signature recadrée depuis la photo d'origine, dans sa ligne, ou fais-le signer sur l'écran.</p>
+  <div class="actions">
+   <button type="button" class="main" id="recognizeOldSheetBtn">Reconnaître le texte</button>
+   <button type="button" class="main" id="applyOldSheetBtn">Préremplir la fiche</button>
+   <button type="button" id="closeOldSheetImportBtn">Fermer</button>
+  </div>
+ </div>
+</div>
 <script>
 const SUPABASE_URL="https://zqpnryrzwfetbysawkae.supabase.co";
 const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhbGciOiJIUzI1NiIsInR5cCI6ImFub24iLCJpYXQiOjE3OTIwOTQ0MjYsImV4cCI6MjEwNzY3MDQyNn0.luUdKRptpEo6bXhxc5EWdfnk4vkMiVEsuGLLtcnAIZA";
@@ -367,22 +385,5 @@ const tbody=$("printRows");const draft=[...tbody.querySelectorAll("tr.draft-row"
 $("oldSheetImport").classList.add("hidden");msg("sheetMsg",names.length+" nom(s) proposé(s). Vérifie chaque ligne, les dates et les signatures avant enregistrement.");};
 let liveRefreshTimer=null;(async()=>{try{const querySession=new URLSearchParams(location.search).get("session");const remembered=localStorage.getItem("formation_last_session");await loadPublicSessions(querySession||remembered||null);if(trainerToken){try{const rows=await loadTrainerHistory(remembered);const chosen=rows.find(x=>x.id===remembered)||rows[0];if(chosen){$("printArea").classList.remove("hidden");$("participantPanel").classList.add("hidden");$("trainerAccountLabel").textContent=(trainerInfo?.full_name||"Formateur")+(trainerInfo?.is_admin?" · Administrateur":"");$("manageTrainersBtn").classList.toggle("hidden",!trainerInfo?.is_admin);await openDetail(chosen.id);}}catch(e){sessionStorage.removeItem("formation_trainer_token");sessionStorage.removeItem("formation_trainer_info");trainerToken="";trainerInfo=null;}}liveRefreshTimer=window.setInterval(refreshPublicSessionList,30000);}catch(e){displayRuntimeError(e.message||String(e));}})();
 </script>
-<div id="oldSheetImport" class="import-dialog hidden noprint" role="dialog" aria-modal="true" aria-labelledby="oldSheetImportTitle">
- <div class="import-card">
-  <h2 id="oldSheetImportTitle">Importer une ancienne fiche papier</h2>
-  <p>Ajoute une photo nette ou un scan. La reconnaissance extrait le texte et propose les noms des participants. Vérifie les résultats avant de préremplir la fiche.</p>
-  <input id="oldSheetFile" type="file" accept="image/*">
-  <img id="oldSheetPreview" class="hidden" alt="Aperçu de l'ancienne fiche">
-  <p id="oldSheetProgress" class="hint" aria-live="polite"></p>
-  <label>Texte reconnu – tu peux le corriger avant l'analyse
-   <textarea id="oldSheetText" placeholder="Le texte reconnu apparaîtra ici…"></textarea>
-  </label>
-  <p class="hint">Les signatures manuscrites ne peuvent pas être recréées fidèlement par OCR. Pour les conserver, importe pour chaque participant une image de signature recadrée depuis la photo d'origine, dans sa ligne, ou fais-le signer sur l'écran.</p>
-  <div class="actions">
-   <button type="button" class="main" id="recognizeOldSheetBtn">Reconnaître le texte</button>
-   <button type="button" class="main" id="applyOldSheetBtn">Préremplir la fiche</button>
-   <button type="button" id="closeOldSheetImportBtn">Fermer</button>
-  </div>
- </div>
-</div>
+
 </body></html>
