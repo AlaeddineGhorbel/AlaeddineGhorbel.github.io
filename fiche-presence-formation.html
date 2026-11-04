@@ -45,7 +45,7 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
 .hidden{display:none!important}.error{color:#b42318}.success{color:#16794a}
 .panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:16px}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
- .noprint{display:flex}.public-footer{display:flex;justify-content:center;padding:18px 0 8px}.public-footer button{font-size:13px;color:var(--muted);background:transparent;border-style:solid}.signature-img{max-width:170px;max-height:52px;object-fit:contain}
+ .noprint{display:flex}.public-footer{display:flex!important;justify-content:center;align-items:center;padding:20px 8px 8px;margin-top:18px;border-top:1px solid var(--border);width:100%}.public-footer button{display:inline-flex;justify-content:center;min-width:220px;padding:11px 20px;font-size:14px;font-weight:600;color:var(--text);background:var(--thead);border:1px solid var(--border);border-radius:8px}.signature-img{max-width:170px;max-height:52px;object-fit:contain}
 @media (max-width:560px){.fields{grid-template-columns:1fr}.head{grid-template-columns:1fr}.head .t{border:0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}}
 @media screen and (max-width:700px){.wrap{padding:8px}.sheet{padding:12px}table,tbody,tr,td{display:block;width:100%}thead{display:none}tr{border:1px solid var(--border);border-radius:10px;margin-bottom:12px;padding:6px}td{border:0;padding:6px 4px}td::before{content:attr(data-label);display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:3px}td input{border:1px solid var(--border);border-radius:6px;min-height:44px}td.sig{padding:6px 4px}canvas.pad{border:1px dashed var(--border);border-radius:6px}td.ev{text-align:left}.eval{justify-content:flex-start;gap:10px}.eval span{width:40px;height:40px}}
 /* Ancienne règle noir et blanc supprimée : impression gérée par le bloc unique ci-dessous. */
@@ -130,8 +130,9 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
  <div class="prog"><p class="hint">Remplis ta ligne directement dans le tableau ci-dessus. Elle sera ajoutée à la feuille partagée.</p>
  <div class="btns noprint"><button class="main" id="submitParticipant">Enregistrer ma ligne</button></div><div id="participantMsg" class="hint noprint"></div>
  </div>
+ <div class="public-footer noprint"><button type="button" id="toggleAdminAccess">Accès administrateur</button></div>
 </section>
-<div class="public-footer noprint"><button type="button" id="toggleAdminAccess">Accès administrateur</button></div>
+
 <div id="printArea" class="sheet hidden">
  <div class="toolbar noprint" id="sheetToolbar">
   <button class="main" id="saveSessionInline">Enregistrer la fiche</button><button class="main" id="printBtn">Imprimer / Enregistrer en PDF</button>
