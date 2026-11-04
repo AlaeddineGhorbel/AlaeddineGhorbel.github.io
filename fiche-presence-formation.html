@@ -106,6 +106,24 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
    <select id="publicSessionSelect" aria-label="Choisir une fiche de formation ouverte"></select>
   </label>
  </div>
+ <div class="panel noprint" style="padding:12px;margin-bottom:14px">
+  <div class="toolbar"><button type="button" id="toggleCreatePublic" class="main">+ Créer une fiche de présence</button><button type="button" id="toggleTrainerAccess">Accès formateur</button></div>
+  <div id="createPublicBox" class="hidden">
+   <p class="hint">Créez une fiche distincte. Le code de gestion sera affiché une seule fois : transmettez-le au formateur pour qu’il puisse modifier ou terminer cette fiche.</p>
+   <div class="fields">
+    <label>Date<input type="date" id="pub_date"></label><label>Client<input type="text" id="pub_client" placeholder="Nom du client"></label>
+    <label>Formateur<input type="text" id="pub_trainer" placeholder="Nom du formateur"></label><label>Thème<input type="text" id="pub_theme" placeholder="Thème de formation"></label>
+    <label>Horaire<input type="text" id="pub_schedule" placeholder="ex. 09:00 – 12:00"></label>
+    <label style="grid-column:1/-1">Programme<textarea id="pub_programme" placeholder="Programme de formation"></textarea></label>
+   </div>
+   <button type="button" class="main" id="createPublicSessionBtn">Enregistrer la nouvelle fiche</button><div id="createPublicMsg" class="hint"></div>
+   <div id="publicManagementCodeBox" class="hidden" style="padding:10px;border:1px solid var(--border);border-radius:8px;margin-top:10px"><b>Code de gestion de cette fiche</b><p class="hint">Copiez-le et transmettez-le au formateur. Il ne sera plus affiché après fermeture de cette page.</p><code id="publicManagementCode" style="word-break:break-all"></code><div class="btns"><button type="button" id="copyPublicManagementCode">Copier le code</button></div></div>
+  </div>
+  <div id="trainerAccessBox" class="hidden">
+   <label>Code formateur / code de gestion de la fiche<input id="sharedTrainerCode" type="password" autocomplete="off" placeholder="Saisir le code transmis par le formateur"></label>
+   <button type="button" class="main" id="unlockTrainerMode">Ouvrir les outils formateur</button><div id="trainerAccessMsg" class="hint"></div>
+  </div>
+ </div>
  <div class="head"><div class="logo"><img alt="CliniSys" src="https://cdn.bitrix24.com/b14232851/landing/73f/73f488fdac45de890b2693002476725c/logo_photo_profil_1x.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="logo-fallback" style="display:none">CliniSys</span></div><div class="t"><small>FORMULAIRE</small><span>FICHE DE PRESENCE DE FORMATION</span></div><div class="ref">ENQ-&nbsp;DEV-03<br>Rév : 4<br>Page : 1/1</div></div>
  <div id="participantMeta" class="fields"></div>
  <div class="tw"><table><thead><tr><th>Nom et Prénom</th><th>Signature</th><th>Qualification</th><th>Évaluation (*)</th><th>Observation(s)</th></tr></thead><tbody id="publicRows"><tr id="participantInputRow"><td data-label="Nom et Prénom"><input id="p_name" type="text" aria-label="Nom et prénom" placeholder="Nom et prénom"></td><td class="sig" data-label="Signature"><div id="participantSignatureControl"></div></td><td data-label="Qualification"><input id="p_qualification" type="text" aria-label="Qualification" placeholder="Qualification"></td><td class="ev" data-label="Évaluation (*)"><select id="p_evaluation"><option value="">—</option><option value="1">1 – Faible</option><option value="2">2 – Moyen</option><option value="3">3 – Bien</option><option value="4">4 – Très bien</option></select></td><td data-label="Observation(s)"><input id="p_observations" type="text" aria-label="Observations"></td></tr></tbody></table></div>
@@ -175,8 +193,8 @@ function createSignatureControl(el,label){const c={label:label,value:"",data:fun
 adminSig=createSignatureControl($("adminSignatureControl"),"Signature Formateur");
 participantSig=createSignatureControl($("participantSignatureControl"),"Votre signature");
 function sessionPayload(){return{client:$("pr_client").value.trim(),training_date:$("pr_date").value||null,trainer:$("pr_trainer").value.trim(),theme:$("pr_theme").value.trim(),schedule:$("pr_schedule").value.trim(),programme:$("pr_programme").value,trainer_signature:adminSig.data()};}
-function fillEditor(s){$("pr_date").value=s.training_date||"";$("pr_client").value=s.client||"";$("pr_trainer").value=s.trainer||"";$("pr_theme").value=s.theme||"";$("pr_schedule").value=s.schedule||"";$("pr_programme").value=s.programme||"";adminSig.load(s.trainer_signature);currentSession=s;currentSessionId=s.id||null;attendees=[];$("printRows").innerHTML="";for(let i=0;i<10;i++)addAdminDraftRow();show(null);$("printArea").classList.remove("hidden");}
-async function openDetail(id){currentSessionId=id;try{const r=await api("get_public_session",{session_id:id});currentSession=r.session;attendees=r.attendees||[];renderSheet();}catch(e){msg("sheetMsg",e.message,true);}}
+function fillEditor(s){$("pr_date").value=s.training_date||"";$("pr_client").value=s.client||"";$("pr_trainer").value=s.trainer||"";$("pr_theme").value=s.theme||"";$("pr_schedule").value=s.schedule||"";$("pr_programme").value=s.programme||"";adminSig.load(s.trainer_signature);currentSession=s;currentSessionId=s.id||null;attendees=[];$("printRows").innerHTML="";for(let i=0;i<10;i++)addAdminDraftRow();$("printArea").classList.remove("hidden");}
+async function openDetail(id){currentSessionId=id;try{const r=await api("get_public_session",{session_id:id});currentSession=r.session;attendees=r.attendees||[];renderSheet();$("printArea").classList.remove("hidden");}catch(e){msg("sheetMsg",e.message,true);}}
 function copyLink(id){const u=location.origin+location.pathname+"?session="+id;navigator.clipboard.writeText(u).then(()=>alert("Lien à transmettre aux participants copié : "+u)).catch(()=>prompt("Copie ce lien :",u));}
 $("loadHistoryBtn").onclick=async()=>{try{const r=await api("list_sessions");const sel=$("sessionHistory");sel.innerHTML='<option value="">Choisir une fiche enregistrée</option>';for(const s of r.sessions||[]){const o=document.createElement("option");o.value=s.id;o.textContent=(s.training_date||"Sans date")+" · "+s.client+" · "+s.theme+" ("+s.attendee_count+" participant(s))";sel.appendChild(o);}msg("sheetMsg",(r.sessions||[]).length+" fiche(s) retrouvée(s).");}catch(e){msg("sheetMsg",e.message,true);}};
 $("sessionHistory").onchange=()=>{if($("sessionHistory").value)openDetail($("sessionHistory").value);};
@@ -197,25 +215,39 @@ async function loadPublicSessions(preferredId=null){try{const r=await api("list_
 $("publicSessionSelect").onchange=()=>{if($("publicSessionSelect").value)loadParticipant($("publicSessionSelect").value);};
 $("submitParticipant").onclick=async()=>{const name=$("p_name").value.trim();if(!name){msg("participantMsg","Saisis ton nom et prénom.",true);return;}const saved=JSON.parse(localStorage.getItem("formation_"+currentSessionId)||"null");const code=$("p_code").value.trim()||(saved&&saved.code)||"";const payload={full_name:name,qualification:$("p_qualification").value,evaluation:$("p_evaluation").value?Number($("p_evaluation").value):null,observations:$("p_observations").value,signature:participantSig.data()};try{const r=await api("submit_attendee",{session_id:currentSessionId,attendee_id:code&&saved?saved.attendee_id:null,access_code:code,attendee:payload});if(r.created){localStorage.setItem("formation_"+currentSessionId,JSON.stringify({attendee_id:r.attendee.id,code:r.access_code,name}));$("p_code").value=r.access_code;$("personalCode").textContent=r.access_code;$("codeResult").classList.remove("hidden");}else{localStorage.setItem("formation_"+currentSessionId,JSON.stringify({attendee_id:r.attendee.id,code,name}));$("codeResult").classList.add("hidden");}msg("participantMsg",r.created?"Ta ligne a été enregistrée. Conserve ton code personnel.":"Ta propre ligne a été mise à jour.");await refreshPublicSession();}catch(e){msg("participantMsg",e.message,true);}};
 $("copyCode").onclick=()=>navigator.clipboard.writeText($("personalCode").textContent).then(()=>alert("Code copié."));
+$("toggleCreatePublic").onclick=()=>{$("createPublicBox").classList.toggle("hidden");$("trainerAccessBox").classList.add("hidden");};
+$("toggleTrainerAccess").onclick=()=>{$("trainerAccessBox").classList.toggle("hidden");$("createPublicBox").classList.add("hidden");};
+$("createPublicSessionBtn").onclick=async()=>{
+ const x={client:$("pub_client").value.trim(),training_date:$("pub_date").value,trainer:$("pub_trainer").value.trim(),theme:$("pub_theme").value.trim(),schedule:$("pub_schedule").value.trim(),programme:$("pub_programme").value};
+ try{
+  if(!x.client||!x.training_date||!x.trainer||!x.theme)throw Error("Date, client, formateur et thème sont obligatoires.");
+  const b=$("createPublicSessionBtn");b.disabled=true;
+  const r=await api("create_public_session",{session:x});
+  $("publicManagementCode").textContent=r.management_code;
+  $("publicManagementCodeBox").classList.remove("hidden");
+  $("createPublicMsg").textContent="Fiche créée. Elle est maintenant disponible dans la liste des formations actives.";
+  await loadPublicSessions(r.session.id);
+  b.disabled=false;
+ }catch(e){$("createPublicMsg").textContent=e.message;$("createPublicMsg").className="hint error";$("createPublicSessionBtn").disabled=false;}
+};
+$("copyPublicManagementCode").onclick=()=>navigator.clipboard.writeText($("publicManagementCode").textContent).then(()=>alert("Code copié."));
+$("unlockTrainerMode").onclick=async()=>{
+ const code=$("sharedTrainerCode").value.trim().toUpperCase();
+ if(code.length<16){$("trainerAccessMsg").textContent="Code invalide : vérifiez le code transmis.";return;}
+ try{
+  const r=await api("list_sessions",{trainer_code:code});
+  if(!r.sessions||!r.sessions.length)throw Error("Aucune fiche associée à ce code.");
+  trainerCode=code;localStorage.setItem("formation_trainer_code",code);$("trainerCodeInput").value=code;
+  $("printArea").classList.remove("hidden");
+  const current=r.sessions.find(s=>s.id===currentSessionId);
+  await openDetail((current||r.sessions[0]).id);
+  $("trainerAccessMsg").textContent="Accès formateur activé. Les outils de gestion sont affichés ci-dessous.";
+  $("printArea").scrollIntoView({behavior:"smooth",block:"start"});
+ }catch(e){$("trainerAccessMsg").textContent=e.message;$("trainerAccessMsg").className="hint error";}
+};
 let liveRefreshTimer=null;(async()=>{
  const querySession=new URLSearchParams(location.search).get("session");
- if(querySession){await loadPublicSessions(querySession);return;}
- if(localStorage.getItem("formation_trainer_code")){
-  try{
-   const result=await api("list_sessions");
-   const sessions=result.sessions||[];
-   const active=sessions.filter(s=>s.status==="active");
-   if(active.length){
-    const latest=active[0];
-    localStorage.setItem("formation_trainer_session",latest.id);
-    await openDetail(latest.id);
-   }else{
-    fillEditor({});
-    msg("sheetMsg","Aucune fiche ouverte. Crée une nouvelle fiche pour démarrer une formation.");
-   }
-   return;
-  }catch(e){msg("sheetMsg","Impossible de charger les fiches : "+e.message,true);return;}
- }
- await loadPublicSessions();
+ await loadPublicSessions(querySession||null);
+ liveRefreshTimer=window.setInterval(async()=>{const selected=$("publicSessionSelect").value;await loadPublicSessions(selected||null);},30000);
 })();
 </script></body></html>
