@@ -156,7 +156,7 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
   </label>
  </div>
  <div class="panel noprint" style="padding:12px;margin-bottom:14px">
-  <div class="toolbar"><button type="button" id="toggleCreatePublic" class="main">+ Nouvelle fiche</button><button type="button" id="publicBlankPrintBtn">Fiche vierge</button><button type="button" id="toggleTrainerAccess">Formateur</button><button type="button" id="toggleAdminAccess">Admin</button></div>
+  <div class="toolbar"><button type="button" id="toggleCreatePublic" class="main">+ Nouvelle fiche</button><button type="button" id="publicPrintBtn">Imprimer</button><button type="button" id="publicBlankPrintBtn">Fiche vierge</button><button type="button" id="toggleTrainerAccess">Formateur</button><button type="button" id="toggleAdminAccess">Admin</button></div>
   <div id="createPublicBox" class="hidden">
    <p class="hint">Créez une fiche depuis votre compte formateur. Elle sera automatiquement rattachée à votre compte.</p>
    <div class="fields">
@@ -331,6 +331,20 @@ $("printBtn").onclick=()=>{
  area.classList.remove("hidden");
  renderPublicTable();
  if(typeof renderSheet==="function" && currentSession) renderSheet();
+ requestAnimationFrame(()=>requestAnimationFrame(()=>window.print()));
+};
+$("publicPrintBtn").onclick=()=>{
+ if(!currentSession){msg("participantMsg","Aucune fiche sélectionnée à imprimer.",true);return;}
+ const saved={session:currentSession,sessionId:currentSessionId,attendees:attendees,visible:!$("printArea").classList.contains("hidden")};
+ renderSheet();
+ $("printArea").classList.remove("hidden");
+ const restore=()=>{
+  window.removeEventListener("afterprint",restore);
+  currentSession=saved.session;currentSessionId=saved.sessionId;attendees=saved.attendees;
+  $("printArea").classList.toggle("hidden",!saved.visible);
+  renderPublicTable();
+ };
+ window.addEventListener("afterprint",restore,{once:true});
  requestAnimationFrame(()=>requestAnimationFrame(()=>window.print()));
 };
 $("publicBlankPrintBtn").onclick=()=>{
