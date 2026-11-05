@@ -111,6 +111,40 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
 
 #runtimeError{display:none;margin:12px 0;padding:14px 16px;border:2px solid #b42318;border-radius:10px;background:#fff1f0;color:#8f1711;font-weight:600;white-space:pre-wrap;overflow-wrap:anywhere}#runtimeError strong{display:block;margin-bottom:5px;font-size:16px}#runtimeError small{display:block;margin-top:7px;font-weight:400;color:#7a271a}
 
+/* Barre d'actions : une seule ligne, sans chevauchement */
+#participantPanel .public-main-toolbar{
+ display:flex!important;
+ flex-direction:row!important;
+ flex-wrap:nowrap!important;
+ align-items:center!important;
+ justify-content:flex-start!important;
+ gap:8px!important;
+ width:100%!important;
+ min-width:0!important;
+ overflow-x:auto!important;
+ overflow-y:hidden!important;
+ white-space:nowrap!important;
+ padding:6px 2px 12px!important;
+}
+#participantPanel .public-main-toolbar button{
+ display:inline-flex!important;
+ flex:0 0 auto!important;
+ width:auto!important;
+ min-width:max-content!important;
+ max-width:none!important;
+ position:relative!important;
+ margin:0!important;
+ white-space:nowrap!important;
+ line-height:1.25!important;
+}
+#participantPanel .create-public-box{display:block!important;width:100%!important;min-width:0!important;clear:both!important;}
+#participantPanel .create-public-fields{display:grid!important;width:100%!important;min-width:0!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important;}
+#participantPanel .create-public-fields label{display:flex!important;flex-direction:column!important;min-width:0!important;width:100%!important;}
+#participantPanel .create-public-fields input,
+#participantPanel .create-public-fields textarea{display:block!important;position:static!important;width:100%!important;max-width:100%!important;min-width:0!important;box-sizing:border-box!important;margin:0!important;}
+@media(max-width:900px){#participantPanel .create-public-fields{grid-template-columns:repeat(2,minmax(0,1fr))!important;}}
+@media(max-width:600px){#participantPanel .create-public-fields{grid-template-columns:minmax(0,1fr)!important;gap:12px!important;}#participantPanel .public-main-toolbar{gap:6px!important;}#participantPanel .public-main-toolbar button{padding:9px 10px!important;font-size:13px!important;}}
+ 
 /* Responsive : tableau classique sur ordinateur, cartes empilées uniquement sur petit écran */
 @media screen and (max-width:760px){
  html,body{max-width:100%;overflow-x:hidden}
