@@ -207,7 +207,8 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
  </div>
  <div class="panel noprint" style="padding:12px;margin-bottom:14px">
   <div class="toolbar public-main-toolbar"><button type="button" id="toggleCreatePublic" class="main">+ Nouvelle fiche</button><button type="button" id="publicPrintBtn">Imprimer</button><button type="button" id="publicBlankPrintBtn">Fiche vierge</button><button type="button" id="toggleTrainerAccess">Formateur</button><button type="button" id="toggleAdminAccess">Admin</button><button type="button" class="main hidden" id="createPublicSessionBtn">Créer la fiche</button><button type="button" class="hidden" id="closeCreatePublicBtn">Fermer</button></div>
-  <div id="createPublicBox" class="hidden create-public-box">
+ </div>
+ <div id="createPublicBox" class="hidden create-public-box">
    <p class="hint create-public-help">Vous pouvez créer une fiche sans vous connecter. Elle sera visible par tous les formateurs et restera en attente jusqu’à ce qu’un formateur la prenne en charge avec son compte.</p>
    <div id="createPublicMsg" class="hint create-public-message" role="status" aria-live="polite"></div>
    <div class="create-public-fields">
@@ -219,7 +220,6 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
     <label class="create-programme-field">Programme <span class="optional-mark">(facultatif)</span><textarea id="pub_programme" placeholder="Programme de formation"></textarea></label>
    </div>
   </div>
-
  </div>
  <div class="head"><div class="logo"><img alt="CliniSys" src="https://cdn.bitrix24.com/b14232851/landing/73f/73f488fdac45de890b2693002476725c/logo_photo_profil_1x.png" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><span class="logo-fallback" style="display:none">CliniSys</span></div><div class="t"><small>FORMULAIRE</small><span>FICHE DE PRESENCE DE FORMATION</span></div><div class="ref">ENQ-&nbsp;DEV-03<br>Rév : 4<br>Page : 1/1</div></div>
  <div id="participantMeta" class="fields"></div>
