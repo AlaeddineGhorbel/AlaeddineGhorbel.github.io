@@ -184,7 +184,7 @@ button.main{background:var(--accent);border-color:var(--accent);color:#fff;font-
 
 <div id="printArea" class="sheet hidden">
  <div class="toolbar noprint" id="sheetToolbar">
-  <button class="main" id="saveSessionInline">Enregistrer la fiche</button><button class="main" id="printBtn">Imprimer</button><button type="button" id="importOldSheetBtn" class="hidden">Importer une ancienne fiche</button>
+  <button class="main" id="saveSessionInline">Enregistrer la fiche</button><button class="main" id="printBtn">Imprimer la fiche actuelle</button><button type="button" id="importOldSheetBtn" class="hidden">Importer une ancienne fiche</button>
   <button id="addAdminRowBtn">+ Ajouter une ligne</button>
   
   
@@ -324,7 +324,15 @@ function addAdminDraftRow(){const tr=buildTrainerAttendeeRow({},true);$("printRo
 function renderSheet(){const s=currentSession||{};$("toggleSessionStatusBtn").textContent=s.status==="archived"?"Réouvrir la fiche":"Terminer la formation";$("toggleSessionStatusBtn").disabled=!currentSessionId;$("deleteSessionBtn").classList.toggle("hidden",!trainerInfo||(!trainerInfo.is_admin&&attendees.length>0));$("deleteSessionBtn").disabled=!currentSessionId||(!trainerInfo?.is_admin&&attendees.length>0);$("toggleSessionStatusBtn").classList.toggle("hidden",!trainerInfo);$("loadHistoryBtn").classList.toggle("hidden",!trainerInfo);$("sessionHistoryLabel").classList.toggle("hidden",!trainerInfo);$("pr_date").value=dateToFr(s.training_date)||"";$("pr_client").value=s.client||"";$("pr_trainer").value=s.trainer||"";$("pr_theme").value=s.theme||"";$("pr_schedule").value=s.schedule||"";$("pr_programme").value=s.programme||"";adminSig.load(s.trainer_signature);$("printRows").innerHTML="";attendees.forEach(p=>$("printRows").appendChild(buildTrainerAttendeeRow(p,false)));addAdminDraftRow();$("printArea").classList.remove("hidden");}
 $("addAdminRowBtn").onclick=()=>addAdminDraftRow();
 $("resetAdminRowsBtn").onclick=()=>{document.querySelectorAll("#printRows .draft-row").forEach(r=>r.remove());addAdminDraftRow();};
-$("printBtn").onclick=()=>{window.print();};
+$("printBtn").onclick=()=>{
+ const area=$("printArea");
+ if(!area){msg("sheetMsg","La fiche à imprimer est introuvable.",true);return;}
+ // Imprimer le formulaire actuellement affiché, sans le remplacer par une fiche vierge.
+ area.classList.remove("hidden");
+ renderPublicTable();
+ if(typeof renderSheet==="function" && currentSession) renderSheet();
+ requestAnimationFrame(()=>requestAnimationFrame(()=>window.print()));
+};
 $("publicBlankPrintBtn").onclick=()=>{
  const saved={session:currentSession,sessionId:currentSessionId,attendees:attendees,visible:!$("printArea").classList.contains("hidden")};
  currentSession=null;currentSessionId=null;attendees=[];
